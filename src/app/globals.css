@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --bg: #faf8f5;
+  --surface: #ffffff;
+  --ink: #141414;
+  --muted: #5f5b55;
+  --line: #e6e1d9;
+  --accent: #c8102e;
+  --accent-ink: #ffffff;
+  --masthead: #111111;
+  --masthead-ink: #f5f3ef;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #0f0f10;
+    --surface: #18181a;
+    --ink: #ece9e4;
+    --muted: #a19c94;
+    --line: #2a2a2d;
+    --accent: #ef3a4f;
+    --accent-ink: #ffffff;
+    --masthead: #000000;
+    --masthead-ink: #f5f3ef;
   }
 }
 
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-masthead: var(--masthead);
+  --color-masthead-ink: var(--masthead-ink);
+  --font-sans: var(--font-inter), var(--font-bangla), system-ui, sans-serif;
+  --font-display: var(--font-oswald), var(--font-bangla), system-ui, sans-serif;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+:lang(bn) body {
+  line-height: 1.7;
+}
+
+.prose-body p {
+  margin: 0 0 1.1em;
+  font-size: 1.075rem;
+  line-height: 1.75;
+}
+.prose-body h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin: 1.6em 0 0.6em;
+}
+.prose-body h3 {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 1.4em 0 0.5em;
+}
+.prose-body ul {
+  list-style: disc;
+  padding-left: 1.4em;
+  margin-bottom: 1.1em;
+}
+.prose-body ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+  margin-bottom: 1.1em;
+}
+.prose-body a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.prose-body blockquote {
+  border-left: 4px solid var(--accent);
+  padding-left: 1em;
+  color: var(--muted);
+  font-style: italic;
 }

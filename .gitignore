@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# studio
+studio/node_modules
+studio/dist
+studio/.sanity
+studio/.env
+!.env.example

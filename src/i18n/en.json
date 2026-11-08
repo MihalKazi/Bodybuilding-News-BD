@@ -1,0 +1,72 @@
+{
+  "site": {
+    "name": "Bodybuilding News BD",
+    "tagline": "Bangladesh bodybuilding news, competitions and athletes",
+    "description": "Latest bodybuilding news from Bangladesh and around the world: competition calendar, results, athlete profiles, and training and nutrition guides."
+  },
+  "nav": {
+    "home": "Home",
+    "news": "News",
+    "events": "Events",
+    "athletes": "Athletes",
+    "guides": "Guides"
+  },
+  "categories": {
+    "bd": "Bangladesh",
+    "international": "International",
+    "competition": "Competitions"
+  },
+  "topics": {
+    "training": "Training",
+    "nutrition": "Nutrition"
+  },
+  "home": {
+    "latest": "Latest news",
+    "upcoming": "Upcoming events",
+    "featuredAthletes": "Featured athletes",
+    "guides": "Training & nutrition",
+    "viewAll": "View all"
+  },
+  "news": {
+    "title": "News",
+    "intro": "Bodybuilding news from Bangladesh and the world.",
+    "all": "All",
+    "by": "By"
+  },
+  "events": {
+    "title": "Competition calendar",
+    "intro": "Upcoming bodybuilding and physique competitions, and past results.",
+    "upcoming": "Upcoming",
+    "completed": "Results",
+    "venue": "Venue",
+    "federation": "Organiser",
+    "results": "Results",
+    "place": "Place",
+    "athlete": "Athlete",
+    "division": "Division",
+    "none": "No events listed yet."
+  },
+  "athletes": {
+    "title": "Athletes",
+    "intro": "Profiles of Bangladeshi bodybuilders and physique athletes.",
+    "hometown": "Hometown",
+    "division": "Division",
+    "achievements": "Achievements"
+  },
+  "guides": {
+    "title": "Training & nutrition guides",
+    "intro": "Practical, evidence-based guides for lifters at every level."
+  },
+  "common": {
+    "readMore": "Read more",
+    "back": "Back",
+    "notFound": "Page not found",
+    "notFoundBody": "The page you are looking for does not exist or has moved.",
+    "goHome": "Go to homepage",
+    "language": "Language",
+    "sample": "Sample content: connect Sanity to publish real articles."
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  }
+}
