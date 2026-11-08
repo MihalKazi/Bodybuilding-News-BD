@@ -17,6 +17,16 @@ function preferredLocale(request: NextRequest): Locale {
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // One canonical host: www.bodybuildingnewsbd.com -> bodybuildingnewsbd.com
+  const host = request.headers.get("host") ?? "";
+  if (host.startsWith("www.")) {
+    const url = request.nextUrl.clone();
+    url.host = host.slice(4);
+    url.port = "";
+    return NextResponse.redirect(url, 308);
+  }
+
   const hasLocale = locales.some(
     (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`),
   );
