@@ -22,7 +22,7 @@ function Lead({ article, locale, dict }: { article: Article; locale: Locale; dic
     return (
       <Link href={href} className="block border-b border-line pb-10">
         <Kicker className="mb-4">{dict.categories[article.category]}</Kicker>
-        <h1 className="max-w-5xl font-display text-5xl font-extrabold uppercase leading-[0.92] tracking-[-0.01em] [overflow-wrap:anywhere] sm:text-7xl lg:text-8xl">
+        <h1 className="max-w-5xl text-5xl font-extrabold leading-[1.02] tracking-[-0.035em] sm:text-7xl">
           <span className="hl">{title}</span>
         </h1>
         <p className="mt-6 max-w-2xl text-xl leading-relaxed text-muted">{t(article.excerpt, locale)}</p>
@@ -36,7 +36,7 @@ function Lead({ article, locale, dict }: { article: Article; locale: Locale; dic
       <Photo image={article.image} alt={title} priority ratio="aspect-[4/3]" className="lg:col-span-7" />
       <div className="flex min-w-0 flex-col justify-end lg:col-span-5">
         <Kicker className="mb-4">{dict.categories[article.category]}</Kicker>
-        <h1 className="font-display text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] [overflow-wrap:anywhere] sm:text-5xl xl:text-6xl">
+        <h1 className="text-4xl font-extrabold leading-[1.05] tracking-[-0.03em] sm:text-5xl">
           <span className="hl">{title}</span>
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted">{t(article.excerpt, locale)}</p>
@@ -68,7 +68,7 @@ function EventsBand({ events, locale, dict }: { events: Event[]; locale: Locale;
           return (
             <li key={e.slug} className="border-t border-band-line">
               <Link href={`/${locale}/events/${e.slug}`} className="grid grid-cols-[5rem_1fr] items-baseline gap-x-6 py-5 sm:grid-cols-[7rem_1fr_auto]">
-                <span className="font-display text-6xl font-extrabold leading-none text-accent sm:text-7xl">{day}</span>
+                <span className="font-display text-6xl font-extrabold leading-none text-gold sm:text-7xl">{day}</span>
                 <span>
                   <span className="block font-display text-sm font-bold uppercase tracking-[0.08em] text-band-muted">{month}</span>
                   <span className="hl mt-1 block text-2xl font-bold">{t(e.name, locale)}</span>

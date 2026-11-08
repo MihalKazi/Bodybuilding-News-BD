@@ -31,7 +31,7 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
   const title = t(guide.title, lang)!;
 
   return (
-    <article>
+    <article className="mx-auto max-w-3xl">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -46,14 +46,12 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
           mainEntityOfPage: `${SITE_URL}/${lang}/guides/${slug}`,
         }}
       />
-      <header className="mx-auto max-w-4xl">
-        <BackLink href={`/${lang}/guides`} label={dict.guides.title} />
-        <Kicker className="mt-8">{dict.topics[guide.topic]}</Kicker>
-        <h1 className="mt-3 font-display text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-6xl">
-          {title}
-        </h1>
-        <p className="mt-6 text-xl leading-relaxed text-muted">{t(guide.excerpt, lang)}</p>
-        <p className="mt-6 border-t border-line pt-4 text-sm text-muted">
+      <BackLink href={`/${lang}/guides`} label={dict.guides.title} />
+      <header className="mt-8">
+        <Kicker>{dict.topics[guide.topic]}</Kicker>
+        <h1 className="mt-3 text-4xl font-extrabold leading-[1.08] tracking-[-0.025em] sm:text-5xl">{title}</h1>
+        <p className="mt-5 text-xl leading-relaxed text-muted">{t(guide.excerpt, lang)}</p>
+        <p className="mt-6 border-y border-line py-3 text-sm text-muted">
           <time dateTime={guide.publishedAt}>{formatDate(guide.publishedAt, lang)}</time>
         </p>
       </header>
@@ -61,11 +59,11 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
         image={guide.image}
         alt={title}
         priority
-        ratio="aspect-[3/2]"
-        sizes="(min-width: 1024px) 1024px, 100vw"
-        className="mx-auto mt-10 max-w-5xl"
+        natural
+        sizes="(min-width: 768px) 768px, 100vw"
+        className="mt-8"
       />
-      <div className="mx-auto mt-10 max-w-2xl">
+      <div className="mt-8">
         <Prose value={t(guide.body, lang)} />
       </div>
     </article>

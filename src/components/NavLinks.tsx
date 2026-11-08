@@ -16,7 +16,7 @@ export function NavLinks({ items, label }: { items: { href: string; label: strin
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={`inline-flex min-h-12 items-center whitespace-nowrap border-b-4 ${
-                  active ? "border-accent text-band-ink" : "border-transparent text-band-muted hover:text-band-ink"
+                  active ? "border-gold text-band-ink" : "border-transparent text-band-muted hover:text-band-ink"
                 }`}
               >
                 {item.label}

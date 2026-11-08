@@ -35,8 +35,9 @@ export default async function ArticlePage({ params }: PageProps<"/[lang]/news/[s
 
   const title = t(article.title, lang)!;
 
+  // One reading column: header, photo and body share the same left and right edges.
   return (
-    <article>
+    <article className="mx-auto max-w-3xl">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -52,18 +53,16 @@ export default async function ArticlePage({ params }: PageProps<"/[lang]/news/[s
           mainEntityOfPage: `${SITE_URL}/${lang}/news/${slug}`,
         }}
       />
-      <header className="mx-auto max-w-4xl">
-        <BackLink href={`/${lang}/news`} label={dict.news.title} />
-        <Kicker className="mt-8">{dict.categories[article.category]}</Kicker>
-        <h1 className="mt-3 font-display text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-6xl">
-          {title}
-        </h1>
-        <p className="mt-6 text-xl leading-relaxed text-muted">{t(article.excerpt, lang)}</p>
-        <p className="mt-6 border-t border-line pt-4 text-sm text-muted">
+      <BackLink href={`/${lang}/news`} label={dict.news.title} />
+      <header className="mt-8">
+        <Kicker>{dict.categories[article.category]}</Kicker>
+        <h1 className="mt-3 text-4xl font-extrabold leading-[1.08] tracking-[-0.025em] sm:text-5xl">{title}</h1>
+        <p className="mt-5 text-xl leading-relaxed text-muted">{t(article.excerpt, lang)}</p>
+        <p className="mt-6 flex flex-wrap gap-x-2 border-y border-line py-3 text-sm text-muted">
           {article.author && (
-            <>
-              {dict.news.by} <span className="font-semibold text-ink">{article.author}</span> ·{" "}
-            </>
+            <span>
+              {dict.news.by} <span className="font-semibold text-ink">{article.author}</span> ·
+            </span>
           )}
           <time dateTime={article.publishedAt}>{formatDate(article.publishedAt, lang)}</time>
         </p>
@@ -72,12 +71,11 @@ export default async function ArticlePage({ params }: PageProps<"/[lang]/news/[s
         image={article.image}
         alt={title}
         priority
-        ratio="aspect-[3/2]"
-        sizes="(min-width: 1024px) 1024px, 100vw"
-        className="mx-auto mt-10 max-w-5xl"
-        focus="50% 30%"
+        natural
+        sizes="(min-width: 768px) 768px, 100vw"
+        className="mt-8"
       />
-      <div className="mx-auto mt-10 max-w-2xl">
+      <div className="mt-8">
         <Prose value={t(article.body, lang)} />
       </div>
     </article>

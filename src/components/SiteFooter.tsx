@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+import { LogoMark } from "./Logo";
 
 export function SiteFooter({ locale, dict, year }: { locale: Locale; dict: Dictionary; year: number }) {
   const links = [
@@ -13,11 +14,14 @@ export function SiteFooter({ locale, dict, year }: { locale: Locale; dict: Dicti
     <footer className="mt-24 bg-band text-band-ink">
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="flex flex-wrap items-end justify-between gap-8">
-          <p className="font-display text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl">
-            Bodybuilding
-            <br />
-            News <span className="text-accent">BD</span>
-          </p>
+          <div className="flex items-end gap-5">
+            <LogoMark className="h-20 w-auto shrink-0 text-gold sm:h-28" />
+            <p className="font-display text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl">
+              Bodybuilding
+              <br />
+              News <span className="text-gold">BD</span>
+            </p>
+          </div>
           <ul className="flex flex-wrap gap-x-6 gap-y-1 font-display text-lg font-bold uppercase tracking-[0.04em]">
             {links.map((l) => (
               <li key={l.href}>

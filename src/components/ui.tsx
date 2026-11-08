@@ -16,6 +16,7 @@ export function Photo({
   priority = false,
   className = "",
   focus = "50% 35%",
+  natural = false,
 }: {
   image?: Img;
   alt: string;
@@ -24,10 +25,16 @@ export function Photo({
   priority?: boolean;
   className?: string;
   focus?: string;
+  /** Keep the photo's own shape (capped at 4:5 portrait) instead of cropping to `ratio`. */
+  natural?: boolean;
 }) {
   if (!image?.url) return null;
+  const own = natural && image.width && image.height ? Math.max(image.width / image.height, 0.8) : null;
   return (
-    <div className={`zoom relative overflow-hidden bg-line ${ratio} ${className}`}>
+    <div
+      className={`zoom relative overflow-hidden bg-line ${own ? "" : ratio} ${className}`}
+      style={own ? { aspectRatio: own } : undefined}
+    >
       <Image
         src={image.url}
         alt={image.alt ?? alt}

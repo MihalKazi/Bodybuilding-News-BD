@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { LangSwitcher } from "./LangSwitcher";
+import { LogoMark } from "./Logo";
 import { NavLinks } from "./NavLinks";
 
 export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary }) {
@@ -16,7 +17,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
     <header className="border-b border-band-line bg-band text-band-ink">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-accent focus:px-4 focus:py-3 focus:text-accent-ink"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-gold focus:px-4 focus:py-3 focus:text-gold-ink"
       >
         {dict.common.skip}
       </a>
@@ -27,11 +28,12 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
         </div>
       </div>
       <div className="mx-auto max-w-6xl px-4 pt-6">
-        <Link href={`/${locale}`} className="inline-flex items-stretch gap-3" aria-label={dict.site.name}>
-          <span className="font-display text-4xl font-extrabold uppercase leading-none tracking-[-0.01em] sm:text-6xl">
+        <Link href={`/${locale}`} className="inline-flex items-center gap-3 sm:gap-4" aria-label={dict.site.name}>
+          <LogoMark className="h-11 w-auto shrink-0 text-gold sm:h-16" />
+          <span className="font-display text-[2rem] font-extrabold uppercase leading-none tracking-[-0.01em] sm:text-6xl">
             Bodybuilding News
           </span>
-          <span className="flex items-center bg-accent px-2 font-display text-3xl font-extrabold leading-none text-accent-ink sm:text-5xl">
+          <span className="flex items-center self-stretch bg-gold px-2 font-display text-3xl font-extrabold leading-none text-gold-ink sm:text-5xl">
             BD
           </span>
         </Link>

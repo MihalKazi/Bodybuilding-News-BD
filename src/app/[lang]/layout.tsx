@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, Hind_Siliguri, Inter } from "next/font/google";
 import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
@@ -18,6 +18,8 @@ const bangla = Hind_Siliguri({
   subsets: ["bengali"],
   weight: ["400", "600", "700"],
 });
+
+export const viewport: Viewport = { themeColor: "#0e0e0e" };
 
 export function generateStaticParams() {
   return locales.map((l) => ({ lang: l }));

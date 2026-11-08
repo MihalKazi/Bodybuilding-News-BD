@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
-/* Paper ground, black ink, one red. Dark mode keeps the same roles. */
+/* Paper ground, black ink, the logo's gold. --gold is a fill; --accent is gold dark enough for text. */
 :root {
   --bg: #f6f5f1;
   --surface: #ffffff;
   --ink: #111111;
   --muted: #5c5a55;
   --line: #d9d6ce;
-  --accent: #c8102e;
+  --accent: #7d5f0f;
   --accent-ink: #ffffff;
-  --band: #111111;
+  --gold: #ca9d23;
+  --gold-ink: #111111;
+  --band: #0e0e0e;
   --band-ink: #f6f5f1;
   --band-muted: #a9a59c;
   --band-line: #2e2d2b;
@@ -22,9 +24,11 @@
     --ink: #eeece7;
     --muted: #a9a59c;
     --line: #2e2d2b;
-    --accent: #ff4d5e;
+    --accent: #d9ad3a;
     --accent-ink: #111111;
-    --band: #000000;
+    --gold: #ca9d23;
+    --gold-ink: #111111;
+    --band: #0e0e0e;
     --band-ink: #eeece7;
     --band-muted: #a9a59c;
     --band-line: #2e2d2b;
@@ -39,6 +43,8 @@
   --color-line: var(--line);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
+  --color-gold: var(--gold);
+  --color-gold-ink: var(--gold-ink);
   --color-band: var(--band);
   --color-band-ink: var(--band-ink);
   --color-band-muted: var(--band-muted);
@@ -88,7 +94,7 @@ a:hover .zoom img {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
 
