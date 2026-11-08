@@ -4,9 +4,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { localeLabels, locales, type Locale } from "@/i18n/config";
 
-export function LangSwitcher({ current, label }: { current: Locale; label: string }) {
+export function LangSwitcher({ current, label, compact = false }: { current: Locale; label: string; compact?: boolean }) {
   const pathname = usePathname() ?? `/${current}`;
   const rest = pathname.replace(/^\/(en|bn)(?=\/|$)/, "");
+
+  if (compact) {
+    // Phones: one link to the other edition.
+    const other = locales.find((l) => l !== current)!;
+    return (
+      <Link
+        href={`/${other}${rest}`}
+        hrefLang={other}
+        lang={other}
+        aria-label={`${label}: ${localeLabels[other]}`}
+        className="inline-flex min-h-11 items-center rounded-full border border-band-line px-3 text-sm font-semibold text-band-ink"
+      >
+        {localeLabels[other]}
+      </Link>
+    );
+  }
 
   return (
     <nav aria-label={label} className="flex items-center text-sm">

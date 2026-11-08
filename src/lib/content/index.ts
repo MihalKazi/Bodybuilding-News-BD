@@ -20,7 +20,9 @@ export function slugParams(items: { slug: string }[]) {
 }
 
 function cached() {
-  cacheLife("hours");
+  // Development refreshes almost immediately so new CMS posts show up; production keeps the hourly cache.
+  if (process.env.NODE_ENV === "development") cacheLife("seconds");
+  else cacheLife("hours");
   cacheTag(CONTENT_TAG);
 }
 

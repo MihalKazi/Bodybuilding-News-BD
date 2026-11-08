@@ -7,7 +7,8 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 export const sanityConfigured = Boolean(projectId);
 
 const client = projectId
-  ? createClient({ projectId, dataset, apiVersion: "2025-01-01", useCdn: true })
+  ? // Live API, not the CDN: Next already caches results, and a stale CDN copy would hide new posts for an hour.
+    createClient({ projectId, dataset, apiVersion: "2025-01-01", useCdn: false })
   : null;
 
 // Image projection: resolve the asset to a URL plus intrinsic size.

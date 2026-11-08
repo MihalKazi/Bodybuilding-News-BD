@@ -7,7 +7,7 @@ export function NavLinks({ items, label }: { items: { href: string; label: strin
   const pathname = usePathname() ?? "";
   return (
     <nav aria-label={label}>
-      <ul className="-mb-px flex gap-6 overflow-x-auto font-display text-lg font-bold uppercase tracking-[0.04em] sm:gap-8">
+      <ul className="flex gap-5 overflow-x-auto font-display text-lg font-bold uppercase tracking-[0.03em] md:gap-7">
         {items.map((item) => {
           const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
@@ -15,7 +15,7 @@ export function NavLinks({ items, label }: { items: { href: string; label: strin
               <Link
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`inline-flex min-h-12 items-center whitespace-nowrap border-b-4 ${
+                className={`inline-flex min-h-12 items-center whitespace-nowrap border-b-[3px] ${
                   active ? "border-gold text-band-ink" : "border-transparent text-band-muted hover:text-band-ink"
                 }`}
               >

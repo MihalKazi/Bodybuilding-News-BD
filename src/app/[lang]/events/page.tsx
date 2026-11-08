@@ -30,7 +30,7 @@ function Ledger({ events, locale }: { events: Event[]; locale: Locale }) {
               {fmt(e.startDate, { day: "numeric" })}
             </time>
             <span>
-              <span className="block text-sm font-semibold text-accent">
+              <span className="block text-sm font-semibold text-muted">
                 {fmt(e.startDate, { month: "long", year: "numeric" })}
               </span>
               <span className="hl mt-1 block font-display text-3xl font-bold leading-tight">{t(e.name, locale)}</span>

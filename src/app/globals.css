@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
-/* Paper ground, black ink, the logo's gold. --gold is a fill; --accent is gold dark enough for text. */
+/* Sports-desk standard: white page, light grey surfaces, black header band, the logo's gold as accent. */
 :root {
-  --bg: #f6f5f1;
-  --surface: #ffffff;
+  --bg: #ffffff;
+  --surface: #f2f2f0;
   --ink: #111111;
-  --muted: #5c5a55;
-  --line: #d9d6ce;
+  --muted: #5d5d58;
+  --line: #e2e2de;
+  --radius: 10px;
   --accent: #7d5f0f;
   --accent-ink: #ffffff;
   --gold: #ca9d23;
@@ -16,27 +17,8 @@
   --band-muted: #a9a59c;
   --band-line: #2e2d2b;
   --focus: #7d5f0f;
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Lifted off the band so the black masthead still reads as its own surface. */
-    --bg: #1a1a18;
-    --surface: #222220;
-    --ink: #eeece7;
-    --muted: #a9a59c;
-    --line: #34332f;
-    --accent: #d9ad3a;
-    --accent-ink: #111111;
-    --gold: #ca9d23;
-    --gold-ink: #111111;
-    --band: #0b0b0a;
-    --band-ink: #eeece7;
-    --band-muted: #a9a59c;
-    --band-line: #2a2926;
-    --focus: #d9ad3a;
-  }
+  /* White on every device: no dark mode, and form controls stay light too. */
+  color-scheme: only light;
 }
 
 @theme inline {
@@ -53,6 +35,7 @@
   --color-band-ink: var(--band-ink);
   --color-band-muted: var(--band-muted);
   --color-band-line: var(--band-line);
+  --radius-card: var(--radius);
   --font-sans: var(--font-text), var(--font-bangla), system-ui, sans-serif;
   /* Display: Barlow Condensed for Latin, Anek Bangla (condensed width) for Bangla. */
   --font-display: var(--font-barlow), var(--font-anek), var(--font-bangla), system-ui, sans-serif;
@@ -174,8 +157,10 @@ a:hover .zoom img {
   margin-bottom: 1.15em;
 }
 .prose-body a {
-  color: var(--accent);
+  color: inherit;
   text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 2px;
   text-underline-offset: 0.15em;
 }
 .prose-body blockquote {

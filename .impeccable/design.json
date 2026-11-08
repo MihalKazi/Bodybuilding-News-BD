@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-08T13:00:00Z",
+  "title": "Design System: Bodybuilding News BD",
+  "extensions": {
+    "colorMeta": {
+      "header-black": {
+        "role": "neutral",
+        "displayName": "Header Black",
+        "canonical": "#0e0e0e"
+      },
+      "page-white": {
+        "role": "neutral",
+        "displayName": "Page White",
+        "canonical": "#ffffff"
+      },
+      "card-grey": {
+        "role": "neutral",
+        "displayName": "Card Grey",
+        "canonical": "#f2f2f0"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#111111"
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "canonical": "#5d5d58"
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "#e2e2de"
+      },
+      "logo-gold": {
+        "role": "primary",
+        "displayName": "Logo Gold",
+        "canonical": "#ca9d23",
+        "tonalRamp": [
+          "#3a2d08",
+          "#5c460c",
+          "#7d5f0f",
+          "#a37b16",
+          "#ca9d23",
+          "#d9b34e",
+          "#e7cd85",
+          "#f4e6bf"
+        ]
+      },
+      "gold-text": {
+        "role": "primary",
+        "displayName": "Gold Text",
+        "canonical": "#7d5f0f"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page titles and a photo-less lead story."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Article headlines and the home lead."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Story rows, athlete and event names, section labels."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Article text, max 68ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Bylines, datelines, category and date lines."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "underline-draw",
+        "value": "text-decoration-color 160ms ease",
+        "purpose": "Gold underline draws under a headline link on hover."
+      },
+      {
+        "name": "photo-zoom",
+        "value": "transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1)",
+        "purpose": "Photo scales to 1.025 inside its frame on hover."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Single call to action, e.g. Contact the newsroom.",
+      "html": "<button class=\"ds-btn-primary\">Contact the newsroom</button>",
+      "css": ".ds-btn-primary { background: #111111; color: #f6f5f1; min-height: 44px; padding: 0 20px; border: 0; border-radius: 999px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; text-transform: uppercase; cursor: pointer; transition: background 160ms ease, color 160ms ease; } .ds-btn-primary:hover { background: #ca9d23; color: #0e0e0e; } .ds-btn-primary:focus-visible { outline: 2px solid #7d5f0f; outline-offset: 3px; }"
+    },
+    {
+      "name": "Share Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Outline button with a stroke icon for Facebook, WhatsApp and Copy link.",
+      "html": "<button class=\"ds-btn-outline\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1\"/></svg>Copy link</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; background: transparent; color: #111111; border: 1px solid #111111; border-radius: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; text-transform: uppercase; cursor: pointer; } .ds-btn-outline:hover { background: #111111; color: #f6f5f1; } .ds-btn-outline:focus-visible { outline: 2px solid #7d5f0f; outline-offset: 3px; }"
+    },
+    {
+      "name": "Story Card",
+      "kind": "card",
+      "description": "Grey rounded card with a small square thumbnail and headline.",
+      "html": "<a class=\"ds-card\" href=\"#\"><span class=\"ds-thumb\"></span><span><span class=\"ds-title\">Rasedur Rahman Noyon becomes general secretary</span><span class=\"ds-meta\">Bangladesh · 8 Nov 2026</span></span></a>",
+      "css": ".ds-card{display:flex;gap:16px;align-items:center;background:#f2f2f0;border-radius:10px;padding:12px;color:#111;text-decoration:none}.ds-card:hover{background:#e2e2de}.ds-thumb{width:88px;aspect-ratio:1;border-radius:10px;background:#0e0e0e;flex-shrink:0}.ds-title{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;line-height:1.15}.ds-meta{display:block;margin-top:6px;font-size:14px;color:#5d5d58}"
+    },
+    {
+      "name": "Masthead Navigation",
+      "kind": "nav",
+      "description": "Section links on Record Black; active section underlined in Podium Gold.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\">News</a><a href=\"#\">Events</a><a href=\"#\">Athletes</a><a href=\"#\">Guides</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 28px; background: #0e0e0e; padding: 0 16px; border-bottom: 3px solid #ca9d23; } .ds-nav a { display: inline-flex; align-items: center; min-height: 48px; border-bottom: 4px solid transparent; color: #a9a59c; text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; text-transform: uppercase; } .ds-nav a:hover { color: #f6f5f1; } .ds-nav a[aria-current] { color: #f6f5f1; border-bottom-color: #ca9d23; }"
+    },
+    {
+      "name": "Competition Band",
+      "kind": "custom",
+      "description": "Signature: upcoming shows with a large gold day numeral on black.",
+      "html": "<div class=\"ds-band\"><span class=\"ds-band-day\">12</span><span><span class=\"ds-band-month\">Dec 2026</span><span class=\"ds-band-name\">Dhaka Classic 2026</span></span></div>",
+      "css": ".ds-band { display: grid; grid-template-columns: 6rem 1fr; gap: 24px; align-items: baseline; background: #0e0e0e; color: #f6f5f1; padding: 24px 32px; } .ds-band-day { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 72px; line-height: 1; color: #ca9d23; } .ds-band-month { display: block; font-size: 14px; font-weight: 600; color: #a9a59c; } .ds-band-name { display: block; margin-top: 4px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 30px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Sports Desk",
+    "overview": "The category standard for sports news, done properly: the craft level of The Athletic, ESPN, BBC Sport and Prothom Alo Sports. A black header band with the gold logo, a white page, a photo-led lead story, rounded grey story cards and black section blocks. White on every device; Bangla first.",
+    "keyCharacteristics": [
+      "Black header band with a 3px gold rule; white page beneath.",
+      "Photo-led lead story with only the headline on the photo.",
+      "Rounded (10px) light-grey cards; small square thumbnails in lists.",
+      "Condensed display type for headlines in both languages."
+    ],
+    "rules": [
+      {
+        "name": "The One Accent Rule",
+        "body": "Gold is the only colour besides black, white and grey.",
+        "section": "colors"
+      },
+      {
+        "name": "The Caption-Only Rule",
+        "body": "On a photo, only the headline appears.",
+        "section": "typography"
+      },
+      {
+        "name": "The Bangla Spacing Rule",
+        "body": "Negative letter spacing applies to English only.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Do lead with the newest story that has a photo.",
+      "Do keep only the headline on any photo.",
+      "Do show a logo tile when a story has no photo, so rows stay even.",
+      "Do keep the page white on every device.",
+      "Do keep tap targets at least 44px and text contrast at WCAG AA."
+    ],
+    "donts": [
+      "Don't put standfirsts, dates or labels on a photo.",
+      "Don't add a dark mode or a second accent colour.",
+      "Don't place a small label above a headline; category and date go below it.",
+      "Don't use the federation's emblem or posing-figures motif.",
+      "Don't apply negative letter spacing to Bangla."
+    ]
+  }
+}

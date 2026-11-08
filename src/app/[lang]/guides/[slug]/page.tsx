@@ -51,7 +51,7 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
         <h1 className="track-tight font-display text-5xl font-extrabold leading-[0.98] sm:text-6xl">{title}</h1>
         <p className="mt-5 text-xl leading-relaxed text-muted">{t(guide.excerpt, lang)}</p>
         <p className="mt-6 border-y border-line py-3 text-sm text-muted">
-          <span className="font-display text-base font-bold uppercase text-accent">{dict.topics[guide.topic]}</span> ·{" "}
+          <span className="font-display text-base font-bold uppercase text-ink">{dict.topics[guide.topic]}</span> ·{" "}
           <time dateTime={guide.publishedAt}>{formatDate(guide.publishedAt, lang)}</time>
         </p>
       </header>

@@ -1,45 +1,43 @@
+import Image from "next/image";
 import Link from "next/link";
 import { lang } from "next/root-params";
 import { notFound } from "next/navigation";
-import { Photo, SectionLabel, StoryRow } from "@/components/ui";
+import { LogoMark } from "@/components/Logo";
+import { GridCard, Photo, SectionLabel, StoryCard, StoryRow } from "@/components/ui";
 import { hasLocale, localeTags, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getArticles, getAthletes, getEvents, getGuides, t, type Article, type Event } from "@/lib/content";
-import { contactHref, formatDate } from "@/lib/site";
+import { formatDate } from "@/lib/site";
 
-function Lead({ article, locale, dict }: { article: Article; locale: Locale; dict: Dictionary }) {
+/** Lead story: the photo fills the frame and only the headline sits on it, low, as a caption. */
+function Lead({ article, locale }: { article: Article; locale: Locale }) {
   const title = t(article.title, locale)!;
-  const href = `/${locale}/news/${article.slug}`;
-  const meta = (
-    <p className="mt-5 text-sm font-semibold text-accent">
-      {dict.categories[article.category]} · {formatDate(article.publishedAt, locale)}
-    </p>
-  );
-
-  if (!article.image) {
-    // No photo: the headline carries the top of the page on its own.
-    return (
-      <Link href={href} className="block border-b border-line pb-10">
-        <h1 className="track-tight max-w-5xl font-display text-6xl font-extrabold leading-[0.95] sm:text-8xl">
-          <span className="hl">{title}</span>
-        </h1>
-        <p className="mt-6 max-w-2xl text-xl leading-relaxed text-muted">{t(article.excerpt, locale)}</p>
-        {meta}
-      </Link>
-    );
-  }
-
   return (
-    <Link href={href} className="grid grid-cols-1 gap-8 border-b border-line pb-10 lg:grid-cols-12">
-      <Photo image={article.image} alt="" priority ratio="aspect-[4/3]" className="lg:col-span-7" />
-      <div className="flex min-w-0 flex-col justify-end lg:col-span-5">
-        <h1 className="track-tight font-display text-5xl font-extrabold leading-[0.98] sm:text-6xl">
+    <Link
+      href={`/${locale}/news/${article.slug}`}
+      className={`zoom relative flex w-full overflow-hidden rounded-card bg-band text-band-ink ${
+        article.image ? "aspect-[4/3] max-h-[600px] sm:aspect-[16/10]" : "min-h-[280px]"
+      }`}
+    >
+      {article.image && (
+        <Image
+          src={article.image.url}
+          alt=""
+          fill
+          priority
+          sizes="(min-width: 1024px) 760px, 100vw"
+          className="object-cover"
+          style={{ objectPosition: "50% 25%" }}
+        />
+      )}
+      {/* Scrim only behind the caption, so faces in the upper part stay clear. */}
+      <span aria-hidden className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 to-transparent" />
+      <span className="relative mt-auto block p-5 sm:p-7">
+        <span className="track-tight block max-w-3xl font-display text-2xl font-bold leading-[1.1] sm:text-[2rem]">
           <span className="hl">{title}</span>
-        </h1>
-        <p className="mt-5 text-lg leading-relaxed text-muted">{t(article.excerpt, locale)}</p>
-        {meta}
-      </div>
+        </span>
+      </span>
     </Link>
   );
 }
@@ -48,57 +46,35 @@ function dayMonth(date: string, locale: Locale) {
   const d = new Date(date);
   const fmt = (o: Intl.DateTimeFormatOptions) =>
     new Intl.DateTimeFormat(localeTags[locale], { ...o, timeZone: "Asia/Dhaka" }).format(d);
-  return { day: fmt({ day: "numeric" }), month: fmt({ month: "short", year: "numeric" }) };
+  return { day: fmt({ day: "numeric" }), month: fmt({ month: "short" }) };
 }
 
-function EventsBand({ events, locale, dict }: { events: Event[]; locale: Locale; dict: Dictionary }) {
+/** Schedule strip in the ESPN manner: one row per show, date block left. */
+function Schedule({ events, locale, dict }: { events: Event[]; locale: Locale; dict: Dictionary }) {
   return (
-    <section className="bg-band px-5 py-10 text-band-ink sm:px-10">
-      <div className="mb-6 flex items-baseline justify-between gap-4">
-        <h2 className="font-display text-5xl font-extrabold uppercase">{dict.home.upcoming}</h2>
-        <Link href={`/${locale}/events`} className="hl inline-flex min-h-11 items-center text-sm font-semibold text-band-muted hover:text-band-ink">
-          {dict.home.viewAll}
-        </Link>
-      </div>
-      <ul>
+    <section>
+      <SectionLabel title={dict.home.upcoming} href={`/${locale}/events`} linkLabel={dict.home.viewAll} />
+      <ul className="grid gap-3 sm:grid-cols-2">
         {events.map((e) => {
           const { day, month } = dayMonth(e.startDate, locale);
           return (
-            <li key={e.slug} className="border-t border-band-line">
-              <Link href={`/${locale}/events/${e.slug}`} className="grid grid-cols-[5rem_1fr] items-baseline gap-x-6 py-5 sm:grid-cols-[7rem_1fr_auto]">
-                <span className="font-display text-7xl font-extrabold leading-none text-gold tabular-nums">{day}</span>
-                <span>
-                  <span className="block text-sm font-semibold text-band-muted">{month}</span>
-                  <span className="hl mt-1 block font-display text-3xl font-bold">{t(e.name, locale)}</span>
+            <li key={e.slug}>
+              <Link href={`/${locale}/events/${e.slug}`} className="flex items-center gap-4 rounded-card bg-surface p-3 hover:bg-line">
+                <span className="flex w-16 shrink-0 flex-col items-center rounded-[8px] bg-band py-2 text-band-ink">
+                  <span className="font-display text-3xl font-extrabold leading-none text-gold tabular-nums">{day}</span>
+                  <span className="text-xs font-semibold uppercase text-band-muted">{month}</span>
                 </span>
-                <span className="col-start-2 text-band-muted sm:col-start-auto">
-                  {t(e.venue, locale)}, {t(e.city, locale)}
+                <span className="min-w-0">
+                  <span className="hl block font-display text-2xl font-bold leading-tight">{t(e.name, locale)}</span>
+                  <span className="block truncate text-sm text-muted">
+                    {t(e.venue, locale)}, {t(e.city, locale)}
+                  </span>
                 </span>
               </Link>
             </li>
           );
         })}
       </ul>
-    </section>
-  );
-}
-
-/** When the front page is thin, ask readers for the news instead of leaving blank paper. */
-function TipPanel({ dict, href }: { dict: Dictionary; href?: string }) {
-  return (
-    <section className="grid gap-6 border-t-2 border-ink pt-6 lg:grid-cols-12">
-      <h2 className="font-display text-5xl font-extrabold leading-[0.95] lg:col-span-5">{dict.home.tipTitle}</h2>
-      <div className="lg:col-span-7">
-        <p className="max-w-xl text-lg text-muted">{dict.home.tipBody}</p>
-        {href && (
-          <Link
-            href={href}
-            className="mt-6 inline-flex min-h-11 items-center bg-ink px-5 font-display text-lg font-bold uppercase text-bg hover:bg-gold hover:text-gold-ink"
-          >
-            {dict.empty.cta}
-          </Link>
-        )}
-      </div>
     </section>
   );
 }
@@ -114,69 +90,120 @@ export default async function Home() {
     getGuides(),
   ]);
 
-  const [lead, ...rest] = articles;
+  // Lead with the newest story that has a photo (among the latest four), so the front never opens on an empty frame.
+  const leadIndex = Math.max(0, articles.slice(0, 4).findIndex((a) => a.image));
+  const lead = articles[leadIndex];
+  const rest = articles.filter((_, i) => i !== leadIndex);
+  const side = rest.slice(0, 3);
+  const latest = rest.slice(3, 9);
+  const more = rest.slice(9, 17);
   const upcoming = events
     .filter((e) => e.status === "upcoming")
     .sort((a, b) => a.startDate.localeCompare(b.startDate))
     .slice(0, 4);
   const featured = (athletes.some((a) => a.featured) ? athletes.filter((a) => a.featured) : athletes).slice(0, 4);
+  const meta = (a: Article) => `${dict.categories[a.category]} · ${formatDate(a.publishedAt, locale)}`;
+
+  // Right column: the next stories first; until there are three, real section cards fill the slots.
+  const sectionCards = [
+    { href: `/${locale}/events`, title: dict.nav.events, meta: dict.events.title },
+    { href: `/${locale}/athletes`, title: dict.nav.athletes, meta: dict.athletes.intro },
+    { href: `/${locale}/guides`, title: dict.nav.guides, meta: dict.guides.title },
+  ].slice(0, Math.max(0, 3 - side.length));
+  const strip = [
+    { href: `/${locale}/news`, label: dict.nav.news },
+    { href: `/${locale}/events`, label: dict.nav.events },
+    { href: `/${locale}/athletes`, label: dict.nav.athletes },
+    { href: `/${locale}/guides`, label: dict.nav.guides },
+  ];
 
   return (
-    <div className="flex flex-col gap-16">
-      {lead && <Lead article={lead} locale={locale} dict={dict} />}
-
-      {(rest.length > 0 || guides.length > 0) && (
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-          {rest.length > 0 && (
-            <section className={guides.length ? "lg:col-span-8" : "lg:col-span-12"}>
-              <SectionLabel title={dict.home.moreNews} href={`/${locale}/news`} linkLabel={dict.home.viewAll} />
-              <div className="-mt-6">
-                {rest.slice(0, 6).map((a) => (
-                  <StoryRow
-                    key={a.slug}
-                    href={`/${locale}/news/${a.slug}`}
-                    title={t(a.title, locale)!}
-                    excerpt={t(a.excerpt, locale)}
-                    meta={`${dict.categories[a.category]} · ${formatDate(a.publishedAt, locale)}`}
-                    image={a.image}
-                  />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {guides.length > 0 && (
-            <section className={rest.length ? "lg:col-span-4" : "lg:col-span-12"}>
-              <SectionLabel title={dict.home.guides} href={`/${locale}/guides`} linkLabel={dict.home.viewAll} />
-              <ul className="-mt-2">
-                {guides.slice(0, 5).map((g) => (
-                  <li key={g.slug} className="border-b border-line">
-                    <Link href={`/${locale}/guides/${g.slug}`} className="block py-4">
-                      <span className="hl block font-display text-2xl font-bold leading-tight">{t(g.title, locale)}</span>
-                      <span className="mt-1 block text-sm font-semibold text-accent">{dict.topics[g.topic]}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+    <div className="flex flex-col gap-14">
+      {lead && (
+        <div className="flex flex-col gap-5">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1.6fr_1fr]">
+            <Lead article={lead} locale={locale} />
+            <div className="flex flex-col gap-4">
+              {side.map((a) => (
+                <StoryCard key={a.slug} href={`/${locale}/news/${a.slug}`} title={t(a.title, locale)!} meta={meta(a)} image={a.image} />
+              ))}
+              {sectionCards.map((c) => (
+                <Link key={c.href} href={c.href} className="flex flex-1 gap-4 rounded-card bg-surface p-4 hover:bg-line">
+                  <span className="flex aspect-[4/3] w-32 shrink-0 items-center justify-center self-start rounded-[8px] bg-band sm:w-36">
+                    <LogoMark className="h-12 w-auto text-gold" />
+                  </span>
+                  <span className="flex min-w-0 flex-col gap-1.5 py-1">
+                    <span className="hl font-display text-2xl font-bold leading-[1.1]">{c.title}</span>
+                    <span className="text-sm text-muted">{c.meta}</span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+          <nav aria-label={dict.footer.sections} className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {strip.map((s) => (
+              <Link
+                key={s.href}
+                href={s.href}
+                className="flex min-h-16 items-center rounded-card bg-band px-5 font-display text-2xl font-bold uppercase text-band-ink hover:bg-gold hover:text-gold-ink"
+              >
+                {s.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       )}
 
-      {upcoming.length > 0 && <EventsBand events={upcoming} locale={locale} dict={dict} />}
+      {latest.length > 0 && (
+        <section>
+          <SectionLabel title={dict.home.latest} href={`/${locale}/news`} linkLabel={dict.home.viewAll} />
+          <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            {latest.map((a) => (
+              <GridCard
+                key={a.slug}
+                href={`/${locale}/news/${a.slug}`}
+                title={t(a.title, locale)!}
+                excerpt={t(a.excerpt, locale)}
+                meta={meta(a)}
+                image={a.image}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {more.length > 0 && (
+        <section>
+          <SectionLabel title={dict.home.moreNews} href={`/${locale}/news`} linkLabel={dict.home.viewAll} />
+          <div className="grid gap-x-10 md:grid-cols-2">
+            {more.map((a) => (
+              <StoryRow
+                key={a.slug}
+                href={`/${locale}/news/${a.slug}`}
+                title={t(a.title, locale)!}
+                meta={meta(a)}
+                image={a.image}
+                compact
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {upcoming.length > 0 && <Schedule events={upcoming} locale={locale} dict={dict} />}
 
       {featured.length > 0 && (
         <section>
           <SectionLabel title={dict.home.featuredAthletes} href={`/${locale}/athletes`} linkLabel={dict.home.viewAll} />
-          <ul className="grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
+          <ul className="grid grid-cols-2 gap-5 lg:grid-cols-4">
             {featured.map((a) => {
               const name = t(a.name, locale)!;
               return (
                 <li key={a.slug}>
                   <Link href={`/${locale}/athletes/${a.slug}`} className="block">
                     <Photo image={a.image} alt="" ratio="aspect-[4/5]" sizes="(min-width: 1024px) 25vw, 50vw" className="mb-3" />
-                    <span className="hl block font-display text-3xl font-bold uppercase leading-none">{name}</span>
-                    <span className="mt-2 block text-sm text-muted">
+                    <span className="hl block font-display text-2xl font-bold uppercase leading-none">{name}</span>
+                    <span className="mt-1.5 block text-sm text-muted">
                       {t(a.division, locale)} · {t(a.hometown, locale)}
                     </span>
                   </Link>
@@ -187,7 +214,22 @@ export default async function Home() {
         </section>
       )}
 
-      {articles.length < 4 && <TipPanel dict={dict} href={contactHref(locale)} />}
+      {guides.length > 0 && (
+        <section>
+          <SectionLabel title={dict.home.guides} href={`/${locale}/guides`} linkLabel={dict.home.viewAll} />
+          <div className="grid gap-3 md:grid-cols-2">
+            {guides.slice(0, 4).map((g) => (
+              <StoryCard
+                key={g.slug}
+                href={`/${locale}/guides/${g.slug}`}
+                title={t(g.title, locale)!}
+                meta={dict.topics[g.topic]}
+                image={g.image}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

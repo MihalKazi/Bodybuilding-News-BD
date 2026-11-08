@@ -72,7 +72,7 @@ export default async function ArticlePage({ params }: PageProps<"/[lang]/news/[s
         <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 border-y border-line py-3 text-sm">
           <Link
             href={`/${lang}/news/category/${article.category}`}
-            className="hl inline-flex min-h-11 items-center font-display text-base font-bold uppercase text-accent"
+            className="hl inline-flex min-h-11 items-center font-display text-base font-bold uppercase text-ink"
           >
             {category}
           </Link>
