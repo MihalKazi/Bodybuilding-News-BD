@@ -26,13 +26,24 @@
     "featuredAthletes": "Featured athletes",
     "guides": "Training & nutrition",
     "viewAll": "View all",
-    "moreNews": "More news"
+    "moreNews": "More news",
+    "tipTitle": "Send us your news",
+    "tipBody": "Results from your show, a new gym, an athlete's story: we read every tip from Dhaka to the districts."
   },
   "news": {
     "title": "News",
     "intro": "Bodybuilding news from Bangladesh and the world.",
     "all": "All",
-    "by": "By"
+    "by": "By",
+    "staff": "Staff Reporter",
+    "dateline": "Dhaka",
+    "updated": "Updated",
+    "source": "Source",
+    "share": "Share",
+    "copyLink": "Copy link",
+    "copied": "Link copied",
+    "moreFrom": "More from {category}",
+    "inCategory": "{category} news"
   },
   "events": {
     "title": "Competition calendar",
@@ -69,6 +80,22 @@
     "skip": "Skip to content"
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "about": "About us",
+    "contact": "Contact",
+    "policy": "Editorial policy",
+    "corrections": "Corrections",
+    "facebook": "Facebook",
+    "sections": "Sections",
+    "site": "The site"
+  },
+  "empty": {
+    "eventsTitle": "The competition calendar is being compiled",
+    "eventsBody": "We list national and regional shows once dates are confirmed by the organisers. Organising a show? Send us the date, venue and divisions.",
+    "athletesTitle": "Athlete profiles are on the way",
+    "athletesBody": "We are building profiles of Bangladeshi bodybuilders and physique athletes. Know an athlete we should feature? Tell us.",
+    "guidesTitle": "Training and nutrition guides are in preparation",
+    "guidesBody": "Practical guides written for lifters in Bangladesh are coming soon.",
+    "cta": "Contact the newsroom"
   }
 }

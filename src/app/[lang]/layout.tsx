@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Barlow_Condensed, Hind_Siliguri, Inter } from "next/font/google";
+import { Anek_Bangla, Barlow, Barlow_Condensed, Hind_Siliguri } from "next/font/google";
 import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
 import { lang } from "next/root-params";
@@ -11,8 +11,10 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { usingCms } from "@/lib/content";
 import { alternates, SITE_URL } from "@/lib/site";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+// One family: Barlow for reading and UI, Barlow Condensed for display.
+const barlowText = Barlow({ variable: "--font-text", subsets: ["latin", "latin-ext"], weight: ["400", "500", "600", "700"] });
 const barlow = Barlow_Condensed({ variable: "--font-barlow", subsets: ["latin"], weight: ["600", "700", "800"] });
+const anek = Anek_Bangla({ variable: "--font-anek", subsets: ["bengali"], axes: ["wdth"] });
 const bangla = Hind_Siliguri({
   variable: "--font-bangla",
   subsets: ["bengali"],
@@ -48,6 +50,19 @@ async function currentYear() {
   return new Date().getFullYear();
 }
 
+/** Today's date in Dhaka for the masthead, refreshed hourly. */
+async function today(locale: string) {
+  "use cache";
+  cacheLife("hours");
+  return new Intl.DateTimeFormat(locale, {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Asia/Dhaka",
+  }).format(new Date());
+}
+
 export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const locale = await lang();
   if (!hasLocale(locale)) notFound();
@@ -56,10 +71,10 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   return (
     <html
       lang={localeTags[locale]}
-      className={`${inter.variable} ${barlow.variable} ${bangla.variable} h-full antialiased`}
+      className={`${barlowText.variable} ${barlow.variable} ${anek.variable} ${bangla.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
-        <SiteHeader locale={locale} dict={dict} />
+        <SiteHeader locale={locale} dict={dict} today={await today(localeTags[locale])} />
         {!usingCms && (
           <p className="border-b border-line px-4 py-2 text-center text-sm text-muted">{dict.common.sample}</p>
         )}

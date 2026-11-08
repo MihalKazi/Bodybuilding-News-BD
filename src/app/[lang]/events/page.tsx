@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { lang } from "next/root-params";
 import { notFound } from "next/navigation";
-import { PageTitle, SectionLabel } from "@/components/ui";
+import { EmptyState, PageTitle, SectionLabel } from "@/components/ui";
 import { hasLocale, localeTags, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getEvents, t, type Event } from "@/lib/content";
-import { alternates } from "@/lib/site";
+import { alternates, contactHref } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await lang();
@@ -26,14 +26,14 @@ function Ledger({ events, locale }: { events: Event[]; locale: Locale }) {
             href={`/${locale}/events/${e.slug}`}
             className="grid grid-cols-[5rem_1fr] items-baseline gap-x-6 py-6 sm:grid-cols-[7rem_1fr_16rem]"
           >
-            <time dateTime={e.startDate} className="font-display text-6xl font-extrabold leading-none sm:text-7xl">
+            <time dateTime={e.startDate} className="font-display text-6xl font-extrabold leading-none tabular-nums sm:text-7xl">
               {fmt(e.startDate, { day: "numeric" })}
             </time>
             <span>
-              <span className="block font-display text-sm font-bold uppercase tracking-[0.08em] text-accent">
+              <span className="block text-sm font-semibold text-accent">
                 {fmt(e.startDate, { month: "long", year: "numeric" })}
               </span>
-              <span className="hl mt-1 block text-2xl font-bold">{t(e.name, locale)}</span>
+              <span className="hl mt-1 block font-display text-3xl font-bold leading-tight">{t(e.name, locale)}</span>
               <span className="mt-1 block text-muted">{t(e.summary, locale)}</span>
             </span>
             <span className="col-start-2 mt-2 text-muted sm:col-start-auto sm:mt-0">
@@ -58,7 +58,9 @@ export default async function EventsIndex() {
   return (
     <>
       <PageTitle title={dict.events.title} intro={dict.events.intro} />
-      {events.length === 0 && <p className="text-lg text-muted">{dict.events.none}</p>}
+      {events.length === 0 && (
+        <EmptyState title={dict.empty.eventsTitle} body={dict.empty.eventsBody} cta={dict.empty.cta} href={contactHref(locale)} />
+      )}
       {upcoming.length > 0 && (
         <section className="mb-16">
           <SectionLabel title={dict.events.upcoming} />

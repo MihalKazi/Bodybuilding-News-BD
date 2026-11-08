@@ -24,3 +24,17 @@ export function formatDate(value: string, locale: Locale) {
 export function jsonLd(data: object) {
   return { __html: JSON.stringify(data).replace(/</g, "\\u003c") };
 }
+
+/** Newsroom contact points. Set them in Vercel; links render only when a value exists. */
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "";
+export const FACEBOOK_URL = process.env.NEXT_PUBLIC_FACEBOOK_URL ?? "";
+
+/** Fill a "{name}" placeholder in a dictionary string. */
+export function fill(template: string, values: Record<string, string>) {
+  return template.replace(/\{(\w+)\}/g, (_, k: string) => values[k] ?? "");
+}
+
+/** The contact page exists only once the newsroom has published an email or Facebook page. */
+export function contactHref(locale: string) {
+  return CONTACT_EMAIL || FACEBOOK_URL ? `/${locale}/contact` : undefined;
+}

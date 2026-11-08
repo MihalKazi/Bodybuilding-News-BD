@@ -11,7 +11,16 @@ const image = defineField({
   name: "image",
   type: "image",
   options: { hotspot: true },
-  fields: [{ name: "alt", type: "string", title: "Alt text" }],
+  fields: [
+    { name: "alt", type: "string", title: "Alt text" },
+    {
+      name: "caption",
+      type: "localeString",
+      title: "Caption",
+      description: "Who or what is shown. Leave empty if you are not sure who is pictured.",
+    },
+    { name: "credit", type: "string", title: "Photo credit", description: "Photographer or source, e.g. \"BABBF\"." },
+  ],
 });
 
 export const author = defineType({
@@ -46,6 +55,8 @@ export const article = defineType({
     image,
     defineField({ name: "excerpt", type: "localeText", validation: (r) => r.required() }),
     defineField({ name: "body", type: "localeBody" }),
+    defineField({ name: "sourceName", title: "Source name", type: "string", description: "Outlet or body you got the facts from." }),
+    defineField({ name: "sourceUrl", title: "Source link", type: "url" }),
   ],
   orderings: [{ title: "Newest", name: "newest", by: [{ field: "publishedAt", direction: "desc" }] }],
   preview: { select: { title: "title.en", subtitle: "category", media: "image" } },
@@ -99,7 +110,7 @@ export const athlete = defineType({
   fields: [
     defineField({ name: "name", type: "localeString", validation: (r) => r.required() }),
     { ...slug, options: { source: "name.en", maxLength: 96 } },
-    defineField({ name: "division", type: "string", validation: (r) => r.required() }),
+    defineField({ name: "division", type: "localeString", validation: (r) => r.required() }),
     defineField({ name: "hometown", type: "localeString", validation: (r) => r.required() }),
     defineField({ name: "featured", type: "boolean", initialValue: false }),
     image,
@@ -107,7 +118,7 @@ export const athlete = defineType({
     defineField({ name: "achievements", type: "localeStringList" }),
     defineField({ name: "bio", type: "localeBody" }),
   ],
-  preview: { select: { title: "name.en", subtitle: "division", media: "image" } },
+  preview: { select: { title: "name.en", subtitle: "division.en", media: "image" } },
 });
 
 export const guide = defineType({

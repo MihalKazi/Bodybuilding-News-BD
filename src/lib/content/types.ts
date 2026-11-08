@@ -4,7 +4,15 @@ import type { Locale } from "@/i18n/config";
 /** A field translated per locale. English is required; Bangla falls back to English. */
 export type Localized<T> = { en: T; bn?: T };
 
-export type Image = { url: string; alt?: string; width?: number; height?: number };
+export type Image = {
+  url: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+  /** Shown under the photo. Never guess who is pictured: leave empty when unsure. */
+  caption?: Localized<string>;
+  credit?: string;
+};
 
 export type Body = PortableTextBlock[];
 
@@ -21,6 +29,8 @@ export type Article = {
   updatedAt?: string;
   author?: string;
   image?: Image;
+  sourceName?: string;
+  sourceUrl?: string;
 };
 
 export type EventResult = { place: number; athlete: string; division: string };
@@ -44,7 +54,7 @@ export type Athlete = {
   slug: string;
   name: Localized<string>;
   hometown: Localized<string>;
-  division: string;
+  division: Localized<string>;
   summary: Localized<string>;
   bio: Localized<Body>;
   achievements: Localized<string[]>;

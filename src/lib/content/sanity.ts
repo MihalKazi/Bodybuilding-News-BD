@@ -11,12 +11,12 @@ const client = projectId
   : null;
 
 // Image projection: resolve the asset to a URL plus intrinsic size.
-const image = `image{ "url": asset->url, alt, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }`;
+const image = `image{ "url": asset->url, alt, caption, credit, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height }`;
 
 const queries = {
   articles: `*[_type == "article" && defined(slug.current)] | order(publishedAt desc){
     "slug": slug.current, title, excerpt, body, category, publishedAt,
-    "updatedAt": _updatedAt, "author": author->name, ${image}
+    "updatedAt": _updatedAt, "author": author->name, sourceName, sourceUrl, ${image}
   }`,
   events: `*[_type == "event" && defined(slug.current)] | order(startDate desc){
     "slug": slug.current, name, summary, description, startDate, endDate,

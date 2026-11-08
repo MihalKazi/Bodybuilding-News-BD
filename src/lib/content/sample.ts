@@ -127,7 +127,7 @@ const athletes: Athlete[] = [
   {
     slug: "sample-athlete-one",
     featured: true,
-    division: "Men's Bodybuilding",
+    division: { en: "Men's Bodybuilding", bn: "পুরুষ বডিবিল্ডিং" },
     name: { en: "Sample Athlete One", bn: "নমুনা অ্যাথলেট এক" },
     hometown: { en: "Dhaka", bn: "ঢাকা" },
     summary: {
@@ -146,7 +146,7 @@ const athletes: Athlete[] = [
   {
     slug: "sample-athlete-two",
     featured: true,
-    division: "Women's Fitness",
+    division: { en: "Women's Fitness", bn: "নারী ফিটনেস" },
     name: { en: "Sample Athlete Two", bn: "নমুনা অ্যাথলেট দুই" },
     hometown: { en: "Rajshahi", bn: "রাজশাহী" },
     summary: {

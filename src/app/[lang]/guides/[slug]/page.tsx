@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { BackLink, JsonLd, Kicker, Photo, Prose } from "@/components/ui";
+import { BackLink, Figure, JsonLd, Prose } from "@/components/ui";
 import { hasLocale, localeTags } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getGuide, getGuides, t, slugParams } from "@/lib/content";
@@ -47,22 +47,15 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
         }}
       />
       <BackLink href={`/${lang}/guides`} label={dict.guides.title} />
-      <header className="mt-8">
-        <Kicker>{dict.topics[guide.topic]}</Kicker>
-        <h1 className="mt-3 text-4xl font-extrabold leading-[1.08] tracking-[-0.025em] sm:text-5xl">{title}</h1>
+      <header className="mt-6">
+        <h1 className="track-tight font-display text-5xl font-extrabold leading-[0.98] sm:text-6xl">{title}</h1>
         <p className="mt-5 text-xl leading-relaxed text-muted">{t(guide.excerpt, lang)}</p>
         <p className="mt-6 border-y border-line py-3 text-sm text-muted">
+          <span className="font-display text-base font-bold uppercase text-accent">{dict.topics[guide.topic]}</span> ·{" "}
           <time dateTime={guide.publishedAt}>{formatDate(guide.publishedAt, lang)}</time>
         </p>
       </header>
-      <Photo
-        image={guide.image}
-        alt={title}
-        priority
-        natural
-        sizes="(min-width: 768px) 768px, 100vw"
-        className="mt-8"
-      />
+      <Figure image={guide.image} alt={title} locale={lang} sizes="(min-width: 768px) 768px, 100vw" className="mt-8" />
       <div className="mt-8">
         <Prose value={t(guide.body, lang)} />
       </div>

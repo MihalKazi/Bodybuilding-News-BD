@@ -1,18 +1,18 @@
 import Link from "next/link";
 import { lang } from "next/root-params";
 import { notFound } from "next/navigation";
-import { Kicker, Photo, SectionLabel, StoryRow } from "@/components/ui";
+import { Photo, SectionLabel, StoryRow } from "@/components/ui";
 import { hasLocale, localeTags, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getArticles, getAthletes, getEvents, getGuides, t, type Article, type Event } from "@/lib/content";
-import { formatDate } from "@/lib/site";
+import { contactHref, formatDate } from "@/lib/site";
 
 function Lead({ article, locale, dict }: { article: Article; locale: Locale; dict: Dictionary }) {
   const title = t(article.title, locale)!;
   const href = `/${locale}/news/${article.slug}`;
   const meta = (
-    <p className="mt-5 text-sm text-muted">
+    <p className="mt-5 text-sm font-semibold text-accent">
       {dict.categories[article.category]} · {formatDate(article.publishedAt, locale)}
     </p>
   );
@@ -21,8 +21,7 @@ function Lead({ article, locale, dict }: { article: Article; locale: Locale; dic
     // No photo: the headline carries the top of the page on its own.
     return (
       <Link href={href} className="block border-b border-line pb-10">
-        <Kicker className="mb-4">{dict.categories[article.category]}</Kicker>
-        <h1 className="max-w-5xl text-5xl font-extrabold leading-[1.02] tracking-[-0.035em] sm:text-7xl">
+        <h1 className="track-tight max-w-5xl font-display text-6xl font-extrabold leading-[0.95] sm:text-8xl">
           <span className="hl">{title}</span>
         </h1>
         <p className="mt-6 max-w-2xl text-xl leading-relaxed text-muted">{t(article.excerpt, locale)}</p>
@@ -33,10 +32,9 @@ function Lead({ article, locale, dict }: { article: Article; locale: Locale; dic
 
   return (
     <Link href={href} className="grid grid-cols-1 gap-8 border-b border-line pb-10 lg:grid-cols-12">
-      <Photo image={article.image} alt={title} priority ratio="aspect-[4/3]" className="lg:col-span-7" />
+      <Photo image={article.image} alt="" priority ratio="aspect-[4/3]" className="lg:col-span-7" />
       <div className="flex min-w-0 flex-col justify-end lg:col-span-5">
-        <Kicker className="mb-4">{dict.categories[article.category]}</Kicker>
-        <h1 className="text-4xl font-extrabold leading-[1.05] tracking-[-0.03em] sm:text-5xl">
+        <h1 className="track-tight font-display text-5xl font-extrabold leading-[0.98] sm:text-6xl">
           <span className="hl">{title}</span>
         </h1>
         <p className="mt-5 text-lg leading-relaxed text-muted">{t(article.excerpt, locale)}</p>
@@ -57,8 +55,8 @@ function EventsBand({ events, locale, dict }: { events: Event[]; locale: Locale;
   return (
     <section className="bg-band px-5 py-10 text-band-ink sm:px-10">
       <div className="mb-6 flex items-baseline justify-between gap-4">
-        <h2 className="font-display text-4xl font-extrabold uppercase sm:text-5xl">{dict.home.upcoming}</h2>
-        <Link href={`/${locale}/events`} className="hl text-sm font-semibold text-band-muted hover:text-band-ink">
+        <h2 className="font-display text-5xl font-extrabold uppercase">{dict.home.upcoming}</h2>
+        <Link href={`/${locale}/events`} className="hl inline-flex min-h-11 items-center text-sm font-semibold text-band-muted hover:text-band-ink">
           {dict.home.viewAll}
         </Link>
       </div>
@@ -68,10 +66,10 @@ function EventsBand({ events, locale, dict }: { events: Event[]; locale: Locale;
           return (
             <li key={e.slug} className="border-t border-band-line">
               <Link href={`/${locale}/events/${e.slug}`} className="grid grid-cols-[5rem_1fr] items-baseline gap-x-6 py-5 sm:grid-cols-[7rem_1fr_auto]">
-                <span className="font-display text-6xl font-extrabold leading-none text-gold sm:text-7xl">{day}</span>
+                <span className="font-display text-7xl font-extrabold leading-none text-gold tabular-nums">{day}</span>
                 <span>
-                  <span className="block font-display text-sm font-bold uppercase tracking-[0.08em] text-band-muted">{month}</span>
-                  <span className="hl mt-1 block text-2xl font-bold">{t(e.name, locale)}</span>
+                  <span className="block text-sm font-semibold text-band-muted">{month}</span>
+                  <span className="hl mt-1 block font-display text-3xl font-bold">{t(e.name, locale)}</span>
                 </span>
                 <span className="col-start-2 text-band-muted sm:col-start-auto">
                   {t(e.venue, locale)}, {t(e.city, locale)}
@@ -81,6 +79,26 @@ function EventsBand({ events, locale, dict }: { events: Event[]; locale: Locale;
           );
         })}
       </ul>
+    </section>
+  );
+}
+
+/** When the front page is thin, ask readers for the news instead of leaving blank paper. */
+function TipPanel({ dict, href }: { dict: Dictionary; href?: string }) {
+  return (
+    <section className="grid gap-6 border-t-2 border-ink pt-6 lg:grid-cols-12">
+      <h2 className="font-display text-5xl font-extrabold leading-[0.95] lg:col-span-5">{dict.home.tipTitle}</h2>
+      <div className="lg:col-span-7">
+        <p className="max-w-xl text-lg text-muted">{dict.home.tipBody}</p>
+        {href && (
+          <Link
+            href={href}
+            className="mt-6 inline-flex min-h-11 items-center bg-ink px-5 font-display text-lg font-bold uppercase text-bg hover:bg-gold hover:text-gold-ink"
+          >
+            {dict.empty.cta}
+          </Link>
+        )}
+      </div>
     </section>
   );
 }
@@ -117,10 +135,9 @@ export default async function Home() {
                   <StoryRow
                     key={a.slug}
                     href={`/${locale}/news/${a.slug}`}
-                    kicker={dict.categories[a.category]}
                     title={t(a.title, locale)!}
                     excerpt={t(a.excerpt, locale)}
-                    meta={formatDate(a.publishedAt, locale)}
+                    meta={`${dict.categories[a.category]} · ${formatDate(a.publishedAt, locale)}`}
                     image={a.image}
                   />
                 ))}
@@ -131,21 +148,16 @@ export default async function Home() {
           {guides.length > 0 && (
             <section className={rest.length ? "lg:col-span-4" : "lg:col-span-12"}>
               <SectionLabel title={dict.home.guides} href={`/${locale}/guides`} linkLabel={dict.home.viewAll} />
-              <ol>
-                {guides.slice(0, 5).map((g, i) => (
+              <ul className="-mt-2">
+                {guides.slice(0, 5).map((g) => (
                   <li key={g.slug} className="border-b border-line">
-                    <Link href={`/${locale}/guides/${g.slug}`} className="flex gap-4 py-4">
-                      <span className="w-9 shrink-0 font-display text-3xl font-extrabold leading-none text-accent tabular-nums">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span>
-                        <span className="hl block font-bold leading-snug">{t(g.title, locale)}</span>
-                        <span className="mt-1 block text-sm text-muted">{dict.topics[g.topic]}</span>
-                      </span>
+                    <Link href={`/${locale}/guides/${g.slug}`} className="block py-4">
+                      <span className="hl block font-display text-2xl font-bold leading-tight">{t(g.title, locale)}</span>
+                      <span className="mt-1 block text-sm font-semibold text-accent">{dict.topics[g.topic]}</span>
                     </Link>
                   </li>
                 ))}
-              </ol>
+              </ul>
             </section>
           )}
         </div>
@@ -162,10 +174,10 @@ export default async function Home() {
               return (
                 <li key={a.slug}>
                   <Link href={`/${locale}/athletes/${a.slug}`} className="block">
-                    <Photo image={a.image} alt={name} ratio="aspect-[4/5]" sizes="(min-width: 1024px) 25vw, 50vw" className="mb-3" />
-                    <span className="hl block font-display text-2xl font-bold uppercase leading-tight">{name}</span>
-                    <span className="mt-1 block text-sm text-muted">
-                      {a.division} · {t(a.hometown, locale)}
+                    <Photo image={a.image} alt="" ratio="aspect-[4/5]" sizes="(min-width: 1024px) 25vw, 50vw" className="mb-3" />
+                    <span className="hl block font-display text-3xl font-bold uppercase leading-none">{name}</span>
+                    <span className="mt-2 block text-sm text-muted">
+                      {t(a.division, locale)} · {t(a.hometown, locale)}
                     </span>
                   </Link>
                 </li>
@@ -174,6 +186,8 @@ export default async function Home() {
           </ul>
         </section>
       )}
+
+      {articles.length < 4 && <TipPanel dict={dict} href={contactHref(locale)} />}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { BackLink, JsonLd, Kicker, Photo, Prose } from "@/components/ui";
+import { BackLink, JsonLd, Photo, Prose } from "@/components/ui";
 import { hasLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getAthlete, getAthletes, t, slugParams } from "@/lib/content";
@@ -57,16 +57,15 @@ export default async function AthletePage({ params }: PageProps<"/[lang]/athlete
           className="md:col-span-5"
         />
         <div className={athlete.image ? "md:col-span-7" : "max-w-3xl"}>
-          <Kicker>{athlete.division}</Kicker>
-          <h1 className="mt-3 font-display text-5xl font-extrabold uppercase leading-[0.92] sm:text-7xl">{name}</h1>
+          <h1 className="font-display text-5xl font-extrabold uppercase leading-[0.92] sm:text-7xl">{name}</h1>
           <p className="mt-6 text-xl leading-relaxed text-muted">{t(athlete.summary, lang)}</p>
           <dl className="mt-8 grid grid-cols-2 border-y border-line">
             <div className="py-4 pr-4">
-              <dt className="font-display text-sm font-bold uppercase tracking-[0.08em] text-muted">{dict.athletes.division}</dt>
-              <dd className="mt-1 text-lg font-semibold">{athlete.division}</dd>
+              <dt className="text-sm font-semibold text-muted">{dict.athletes.division}</dt>
+              <dd className="mt-1 text-lg font-semibold">{t(athlete.division, lang)}</dd>
             </div>
             <div className="border-l border-line py-4 pl-4">
-              <dt className="font-display text-sm font-bold uppercase tracking-[0.08em] text-muted">{dict.athletes.hometown}</dt>
+              <dt className="text-sm font-semibold text-muted">{dict.athletes.hometown}</dt>
               <dd className="mt-1 text-lg font-semibold">{t(athlete.hometown, lang)}</dd>
             </div>
           </dl>

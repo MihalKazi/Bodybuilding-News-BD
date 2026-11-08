@@ -15,23 +15,27 @@
   --band-ink: #f6f5f1;
   --band-muted: #a9a59c;
   --band-line: #2e2d2b;
+  --focus: #7d5f0f;
+  color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #121211;
-    --surface: #1a1a19;
+    /* Lifted off the band so the black masthead still reads as its own surface. */
+    --bg: #1a1a18;
+    --surface: #222220;
     --ink: #eeece7;
     --muted: #a9a59c;
-    --line: #2e2d2b;
+    --line: #34332f;
     --accent: #d9ad3a;
     --accent-ink: #111111;
     --gold: #ca9d23;
     --gold-ink: #111111;
-    --band: #0e0e0e;
+    --band: #0b0b0a;
     --band-ink: #eeece7;
     --band-muted: #a9a59c;
-    --band-line: #2e2d2b;
+    --band-line: #2a2926;
+    --focus: #d9ad3a;
   }
 }
 
@@ -49,8 +53,9 @@
   --color-band-ink: var(--band-ink);
   --color-band-muted: var(--band-muted);
   --color-band-line: var(--band-line);
-  --font-sans: var(--font-inter), var(--font-bangla), system-ui, sans-serif;
-  --font-display: var(--font-barlow), var(--font-bangla), system-ui, sans-serif;
+  --font-sans: var(--font-text), var(--font-bangla), system-ui, sans-serif;
+  /* Display: Barlow Condensed for Latin, Anek Bangla (condensed width) for Bangla. */
+  --font-display: var(--font-barlow), var(--font-anek), var(--font-bangla), system-ui, sans-serif;
 }
 
 body {
@@ -62,17 +67,53 @@ body {
   line-height: 1.7;
 }
 
+/* Bangla display runs on Anek Bangla's narrow width so it sits beside Barlow Condensed. */
+.font-display {
+  font-stretch: 75%;
+}
+
+/* Tight tracking is a Latin habit; Bangla conjuncts need their natural spacing. */
+:lang(en) .track-tight {
+  letter-spacing: -0.015em;
+}
+
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+p,
+li,
+dd {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--gold-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.bg-band :focus-visible {
+  outline-color: var(--gold);
+}
+
 /* Headline links: the underline draws in on hover. */
 .hl {
   text-decoration-line: underline;
   text-decoration-thickness: 2px;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 0.16em;
   text-decoration-color: transparent;
   transition: text-decoration-color 160ms ease;
 }
 a:hover .hl,
-a.hl:hover {
-  text-decoration-color: currentColor;
+a.hl:hover,
+a:focus-visible .hl {
+  text-decoration-color: var(--gold);
 }
 
 /* Photos zoom a touch inside their frame on hover. */
@@ -93,25 +134,24 @@ a:hover .zoom img {
   }
 }
 
-:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
-}
-
 .prose-body {
   font-size: 1.125rem;
   line-height: 1.75;
+  max-width: 68ch;
 }
 .prose-body p {
   margin: 0 0 1.15em;
 }
 .prose-body h2 {
   font-family: var(--font-display);
+  font-stretch: 75%;
   font-weight: 700;
   font-size: 1.75rem;
   line-height: 1.1;
-  text-transform: uppercase;
   margin: 1.8em 0 0.6em;
+}
+:lang(en) .prose-body h2 {
+  text-transform: uppercase;
 }
 .prose-body h3 {
   font-weight: 700;
@@ -141,14 +181,8 @@ a:hover .zoom img {
 .prose-body blockquote {
   margin: 1.6em 0;
   font-family: var(--font-display);
+  font-stretch: 75%;
   font-size: 1.75rem;
   line-height: 1.2;
   font-weight: 600;
-}
-
-/* Long Bangla compounds and names must wrap, never push the page sideways. */
-h1,
-h2,
-h3 {
-  overflow-wrap: break-word;
 }
