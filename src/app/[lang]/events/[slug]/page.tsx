@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Cover, JsonLd, Prose } from "@/components/ui";
+import { BackLink, JsonLd, Kicker, Photo, Prose } from "@/components/ui";
 import { hasLocale, localeTags } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getEvent, getEvents, t, slugParams } from "@/lib/content";
@@ -34,7 +33,7 @@ export default async function EventPage({ params }: PageProps<"/[lang]/events/[s
     : formatDate(event.startDate, lang);
 
   return (
-    <article className="mx-auto max-w-3xl">
+    <article className="mx-auto max-w-4xl">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -56,49 +55,49 @@ export default async function EventPage({ params }: PageProps<"/[lang]/events/[s
           image: event.image ? [event.image.url] : undefined,
         }}
       />
-      <Link href={`/${lang}/events`} className="text-sm font-semibold text-accent">
-        ← {dict.events.title}
-      </Link>
-      <p className="mt-4 text-sm font-semibold uppercase tracking-wide text-accent">{dates}</p>
-      <h1 className="mt-2 font-display text-3xl font-bold sm:text-5xl">{name}</h1>
-      <p className="mt-3 text-lg text-muted">{t(event.summary, lang)}</p>
+      <BackLink href={`/${lang}/events`} label={dict.events.title} />
+      <Kicker className="mt-8">{dates}</Kicker>
+      <h1 className="mt-3 font-display text-5xl font-extrabold uppercase leading-[0.92] sm:text-7xl">{name}</h1>
+      <p className="mt-6 text-xl leading-relaxed text-muted">{t(event.summary, lang)}</p>
 
-      <dl className="mt-6 grid gap-4 rounded-lg border border-line bg-surface p-4 sm:grid-cols-2">
-        <div>
-          <dt className="text-xs uppercase text-muted">{dict.events.venue}</dt>
+      <dl className="mt-8 grid border-y border-line sm:grid-cols-2">
+        <div className="py-4 pr-4">
+          <dt className="font-display text-sm font-bold uppercase tracking-[0.08em] text-muted">{dict.events.venue}</dt>
           <dd className="font-semibold">
             {t(event.venue, lang)}, {t(event.city, lang)}
           </dd>
         </div>
         {event.organiser && (
-          <div>
-            <dt className="text-xs uppercase text-muted">{dict.events.federation}</dt>
+          <div className="border-t border-line py-4 sm:border-l sm:border-t-0 sm:pl-4">
+            <dt className="font-display text-sm font-bold uppercase tracking-[0.08em] text-muted">{dict.events.federation}</dt>
             <dd className="font-semibold">{event.organiser}</dd>
           </div>
         )}
       </dl>
 
-      <Cover image={event.image} label={name} className="my-6 aspect-[16/9] rounded-lg" />
-      <Prose value={t(event.description, lang)} />
+      <Photo image={event.image} alt={name} priority ratio="aspect-[3/2]" sizes="(min-width: 1024px) 896px, 100vw" className="mt-10" />
+      <div className="mt-10 max-w-2xl">
+        <Prose value={t(event.description, lang)} />
+      </div>
 
       {event.results && event.results.length > 0 && (
-        <section className="mt-8">
-          <h2 className="mb-3 font-display text-2xl font-bold uppercase">{dict.events.results}</h2>
-          <div className="overflow-x-auto rounded-lg border border-line">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-surface text-xs uppercase text-muted">
+        <section className="mt-12">
+          <h2 className="mb-4 border-t-2 border-ink pt-3 font-display text-2xl font-bold uppercase">{dict.events.results}</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[28rem] text-left">
+              <thead className="border-b border-ink font-display text-sm uppercase tracking-[0.08em] text-muted">
                 <tr>
-                  <th className="p-3">{dict.events.division}</th>
-                  <th className="p-3">{dict.events.place}</th>
-                  <th className="p-3">{dict.events.athlete}</th>
+                  <th className="py-3 pr-4">{dict.events.division}</th>
+                  <th className="py-3 pr-4">{dict.events.place}</th>
+                  <th className="py-3 pr-4">{dict.events.athlete}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
                 {event.results.map((r) => (
                   <tr key={`${r.division}-${r.place}`}>
-                    <td className="p-3">{r.division}</td>
-                    <td className="p-3 font-bold">{r.place}</td>
-                    <td className="p-3">{r.athlete}</td>
+                    <td className="py-3 pr-4">{r.division}</td>
+                    <td className="py-3 pr-4 font-display text-2xl font-extrabold">{r.place}</td>
+                    <td className="py-3 pr-4">{r.athlete}</td>
                   </tr>
                 ))}
               </tbody>

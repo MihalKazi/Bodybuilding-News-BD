@@ -25,7 +25,8 @@
     "upcoming": "Upcoming events",
     "featuredAthletes": "Featured athletes",
     "guides": "Training & nutrition",
-    "viewAll": "View all"
+    "viewAll": "View all",
+    "moreNews": "More news"
   },
   "news": {
     "title": "News",
@@ -64,7 +65,8 @@
     "notFoundBody": "The page you are looking for does not exist or has moved.",
     "goHome": "Go to homepage",
     "language": "Language",
-    "sample": "Sample content: connect Sanity to publish real articles."
+    "sample": "Sample content: connect Sanity to publish real articles.",
+    "skip": "Skip to content"
   },
   "footer": {
     "rights": "All rights reserved."

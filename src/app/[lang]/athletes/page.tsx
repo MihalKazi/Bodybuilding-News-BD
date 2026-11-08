@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { lang } from "next/root-params";
 import { notFound } from "next/navigation";
-import { Card, Grid, PageIntro } from "@/components/ui";
+import { PageTitle, Photo } from "@/components/ui";
 import { hasLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getAthletes, t } from "@/lib/content";
@@ -21,19 +22,23 @@ export default async function AthletesIndex() {
 
   return (
     <>
-      <PageIntro title={dict.athletes.title} intro={dict.athletes.intro} />
-      <Grid>
-        {athletes.map((a) => (
-          <Card
-            key={a.slug}
-            href={`/${locale}/athletes/${a.slug}`}
-            title={t(a.name, locale)!}
-            excerpt={t(a.summary, locale)}
-            meta={`${a.division} · ${t(a.hometown, locale)}`}
-            image={a.image}
-          />
-        ))}
-      </Grid>
+      <PageTitle title={dict.athletes.title} intro={dict.athletes.intro} />
+      <ul className="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+        {athletes.map((a) => {
+          const name = t(a.name, locale)!;
+          return (
+            <li key={a.slug} className={a.image ? "" : "border-t-2 border-ink pt-3"}>
+              <Link href={`/${locale}/athletes/${a.slug}`} className="block">
+                <Photo image={a.image} alt={name} ratio="aspect-[4/5]" sizes="(min-width: 1024px) 25vw, 50vw" className="mb-3" />
+                <span className="hl block font-display text-2xl font-bold uppercase leading-tight">{name}</span>
+                <span className="mt-1 block text-sm text-muted">
+                  {a.division} · {t(a.hometown, locale)}
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 }

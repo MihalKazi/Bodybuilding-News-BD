@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Cover, JsonLd, Prose } from "@/components/ui";
+import { BackLink, JsonLd, Kicker, Photo, Prose } from "@/components/ui";
 import { hasLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getAthlete, getAthletes, t, slugParams } from "@/lib/content";
@@ -33,7 +32,7 @@ export default async function AthletePage({ params }: PageProps<"/[lang]/athlete
   const achievements = t(athlete.achievements, lang) ?? [];
 
   return (
-    <article className="mx-auto max-w-4xl">
+    <article>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -47,35 +46,43 @@ export default async function AthletePage({ params }: PageProps<"/[lang]/athlete
           url: `${SITE_URL}/${lang}/athletes/${slug}`,
         }}
       />
-      <Link href={`/${lang}/athletes`} className="text-sm font-semibold text-accent">
-        ← {dict.athletes.title}
-      </Link>
-      <div className="mt-4 grid gap-8 md:grid-cols-[280px_1fr]">
-        <Cover image={athlete.image} label={name} className="aspect-[3/4] rounded-lg" />
-        <div>
-          <h1 className="font-display text-3xl font-bold sm:text-5xl">{name}</h1>
-          <p className="mt-3 text-lg text-muted">{t(athlete.summary, lang)}</p>
-          <dl className="mt-6 grid grid-cols-2 gap-4 rounded-lg border border-line bg-surface p-4">
-            <div>
-              <dt className="text-xs uppercase text-muted">{dict.athletes.division}</dt>
-              <dd className="font-semibold">{athlete.division}</dd>
+      <BackLink href={`/${lang}/athletes`} label={dict.athletes.title} />
+      <div className={`mt-8 grid gap-10 ${athlete.image ? "md:grid-cols-12" : ""}`}>
+        <Photo
+          image={athlete.image}
+          alt={name}
+          priority
+          ratio="aspect-[4/5]"
+          sizes="(min-width: 768px) 40vw, 100vw"
+          className="md:col-span-5"
+        />
+        <div className={athlete.image ? "md:col-span-7" : "max-w-3xl"}>
+          <Kicker>{athlete.division}</Kicker>
+          <h1 className="mt-3 font-display text-5xl font-extrabold uppercase leading-[0.92] sm:text-7xl">{name}</h1>
+          <p className="mt-6 text-xl leading-relaxed text-muted">{t(athlete.summary, lang)}</p>
+          <dl className="mt-8 grid grid-cols-2 border-y border-line">
+            <div className="py-4 pr-4">
+              <dt className="font-display text-sm font-bold uppercase tracking-[0.08em] text-muted">{dict.athletes.division}</dt>
+              <dd className="mt-1 text-lg font-semibold">{athlete.division}</dd>
             </div>
-            <div>
-              <dt className="text-xs uppercase text-muted">{dict.athletes.hometown}</dt>
-              <dd className="font-semibold">{t(athlete.hometown, lang)}</dd>
+            <div className="border-l border-line py-4 pl-4">
+              <dt className="font-display text-sm font-bold uppercase tracking-[0.08em] text-muted">{dict.athletes.hometown}</dt>
+              <dd className="mt-1 text-lg font-semibold">{t(athlete.hometown, lang)}</dd>
             </div>
           </dl>
           {achievements.length > 0 && (
-            <section className="mt-6">
-              <h2 className="mb-2 font-display text-xl font-bold uppercase">{dict.athletes.achievements}</h2>
-              <ul className="list-disc pl-5">
+            <section className="mt-10">
+              <h2 className="font-display text-2xl font-bold uppercase">{dict.athletes.achievements}</h2>
+              <ul className="mt-3 border-t border-line">
                 {achievements.map((a) => (
-                  <li key={a}>{a}</li>
+                  <li key={a} className="border-b border-line py-3 font-semibold">
+                    {a}
+                  </li>
                 ))}
               </ul>
             </section>
           )}
-          <div className="mt-6">
+          <div className="mt-10">
             <Prose value={t(athlete.bio, lang)} />
           </div>
         </div>

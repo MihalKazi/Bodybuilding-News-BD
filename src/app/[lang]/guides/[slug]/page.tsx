@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Cover, JsonLd, Prose } from "@/components/ui";
+import { BackLink, JsonLd, Kicker, Photo, Prose } from "@/components/ui";
 import { hasLocale, localeTags } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getGuide, getGuides, t, slugParams } from "@/lib/content";
@@ -32,7 +31,7 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
   const title = t(guide.title, lang)!;
 
   return (
-    <article className="mx-auto max-w-3xl">
+    <article>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -47,16 +46,28 @@ export default async function GuidePage({ params }: PageProps<"/[lang]/guides/[s
           mainEntityOfPage: `${SITE_URL}/${lang}/guides/${slug}`,
         }}
       />
-      <Link href={`/${lang}/guides`} className="text-sm font-semibold text-accent">
-        ← {dict.guides.title}
-      </Link>
-      <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-accent">
-        {dict.topics[guide.topic]} · {formatDate(guide.publishedAt, lang)}
-      </p>
-      <h1 className="mt-2 font-display text-3xl font-bold leading-tight sm:text-5xl">{title}</h1>
-      <p className="mt-3 text-lg text-muted">{t(guide.excerpt, lang)}</p>
-      <Cover image={guide.image} label={title} className="my-6 aspect-[16/9] rounded-lg" />
-      <Prose value={t(guide.body, lang)} />
+      <header className="mx-auto max-w-4xl">
+        <BackLink href={`/${lang}/guides`} label={dict.guides.title} />
+        <Kicker className="mt-8">{dict.topics[guide.topic]}</Kicker>
+        <h1 className="mt-3 font-display text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-6xl">
+          {title}
+        </h1>
+        <p className="mt-6 text-xl leading-relaxed text-muted">{t(guide.excerpt, lang)}</p>
+        <p className="mt-6 border-t border-line pt-4 text-sm text-muted">
+          <time dateTime={guide.publishedAt}>{formatDate(guide.publishedAt, lang)}</time>
+        </p>
+      </header>
+      <Photo
+        image={guide.image}
+        alt={title}
+        priority
+        ratio="aspect-[3/2]"
+        sizes="(min-width: 1024px) 1024px, 100vw"
+        className="mx-auto mt-10 max-w-5xl"
+      />
+      <div className="mx-auto mt-10 max-w-2xl">
+        <Prose value={t(guide.body, lang)} />
+      </div>
     </article>
   );
 }

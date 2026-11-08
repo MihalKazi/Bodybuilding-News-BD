@@ -4,77 +4,103 @@ import { PortableText } from "@portabletext/react";
 import type { Body, Image as Img } from "@/lib/content";
 import { jsonLd } from "@/lib/site";
 
-export function Cover({ image, label, className = "" }: { image?: Img; label: string; className?: string }) {
-  if (image?.url) {
-    return (
-      <div className={`relative overflow-hidden bg-line ${className}`}>
-        <Image
-          src={image.url}
-          alt={image.alt ?? label}
-          fill
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          className="object-cover"
-        />
-      </div>
-    );
-  }
-  // No image yet: branded placeholder so layouts keep their shape.
+/**
+ * A photo in a fixed-ratio frame. Renders nothing without a photo:
+ * stories without one are laid out as text, never a filler box.
+ */
+export function Photo({
+  image,
+  alt,
+  ratio = "aspect-[3/2]",
+  sizes = "(min-width: 1024px) 50vw, 100vw",
+  priority = false,
+  className = "",
+  focus = "50% 35%",
+}: {
+  image?: Img;
+  alt: string;
+  ratio?: string;
+  sizes?: string;
+  priority?: boolean;
+  className?: string;
+  focus?: string;
+}) {
+  if (!image?.url) return null;
   return (
-    <div
-      aria-hidden
-      className={`flex items-end bg-gradient-to-br from-masthead via-neutral-800 to-accent p-4 ${className}`}
-    >
-      <span className="font-display text-sm uppercase tracking-widest text-white/70">BBN BD</span>
+    <div className={`zoom relative overflow-hidden bg-line ${ratio} ${className}`}>
+      <Image
+        src={image.url}
+        alt={image.alt ?? alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className="object-cover"
+        style={{ objectPosition: focus }}
+      />
     </div>
   );
 }
 
-export function Card({
-  href,
-  title,
-  excerpt,
-  meta,
-  image,
-}: {
-  href: string;
-  title: string;
-  excerpt?: string;
-  meta?: string;
-  image?: Img;
-}) {
+/** Small uppercase label above a headline: category, topic or date. */
+export function Kicker({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-lg border border-line bg-surface">
-      <Link href={href} className="flex flex-1 flex-col">
-        <Cover image={image} label={title} className="aspect-[16/9]" />
-        <div className="flex flex-1 flex-col gap-2 p-4">
-          {meta && <p className="text-xs font-semibold uppercase tracking-wide text-accent">{meta}</p>}
-          <h3 className="font-display text-lg font-bold leading-snug group-hover:text-accent">{title}</h3>
-          {excerpt && <p className="text-sm text-muted">{excerpt}</p>}
-        </div>
-      </Link>
-    </article>
+    <p className={`font-display text-sm font-bold uppercase tracking-[0.08em] text-accent ${className}`}>{children}</p>
   );
 }
 
-export function SectionHeading({ title, href, linkLabel }: { title: string; href?: string; linkLabel?: string }) {
+/** Section label: a short rule and the name, set small. Sections differ by layout, not by heading chrome. */
+export function SectionLabel({ title, href, linkLabel }: { title: string; href?: string; linkLabel?: string }) {
   return (
-    <div className="mb-4 flex items-end justify-between border-b-4 border-accent pb-2">
-      <h2 className="font-display text-2xl font-bold uppercase">{title}</h2>
+    <div className="mb-6 flex items-baseline justify-between gap-4 border-t-2 border-ink pt-3">
+      <h2 className="font-display text-2xl font-bold uppercase tracking-[0.02em]">{title}</h2>
       {href && (
-        <Link href={href} className="text-sm font-semibold text-accent hover:underline">
-          {linkLabel} →
+        <Link href={href} className="hl text-sm font-semibold">
+          {linkLabel}
         </Link>
       )}
     </div>
   );
 }
 
-export function PageIntro({ title, intro }: { title: string; intro?: string }) {
+export function PageTitle({ title, intro }: { title: string; intro?: string }) {
   return (
-    <header className="mb-8">
-      <h1 className="font-display text-3xl font-bold uppercase sm:text-4xl">{title}</h1>
-      {intro && <p className="mt-2 max-w-2xl text-muted">{intro}</p>}
+    <header className="mb-10 border-b border-line pb-8">
+      <h1 className="font-display text-5xl font-bold uppercase leading-[0.95] tracking-[-0.01em] sm:text-7xl">{title}</h1>
+      {intro && <p className="mt-4 max-w-xl text-lg text-muted">{intro}</p>}
     </header>
+  );
+}
+
+/** A story row: headline and excerpt, a thumbnail on the right only when a photo exists. */
+export function StoryRow({
+  href,
+  kicker,
+  title,
+  excerpt,
+  meta,
+  image,
+}: {
+  href: string;
+  kicker?: string;
+  title: string;
+  excerpt?: string;
+  meta?: string;
+  image?: Img;
+}) {
+  return (
+    <article className="border-b border-line">
+      <Link href={href} className="flex gap-6 py-6">
+        <div className="min-w-0 flex-1">
+          {kicker && <Kicker className="mb-2">{kicker}</Kicker>}
+          <h3 className="text-xl font-bold leading-snug tracking-[-0.01em] sm:text-2xl">
+            <span className="hl">{title}</span>
+          </h3>
+          {excerpt && <p className="mt-2 max-w-2xl text-muted">{excerpt}</p>}
+          {meta && <p className="mt-3 text-sm text-muted">{meta}</p>}
+        </div>
+        <Photo image={image} alt={title} ratio="aspect-square" sizes="160px" className="w-28 shrink-0 sm:w-40" />
+      </Link>
+    </article>
   );
 }
 
@@ -91,6 +117,10 @@ export function JsonLd({ data }: { data: object }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(data)} />;
 }
 
-export function Grid({ children }: { children: React.ReactNode }) {
-  return <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{children}</div>;
+export function BackLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link href={href} className="font-display text-sm font-bold uppercase tracking-[0.08em] text-muted hover:text-ink">
+      {label}
+    </Link>
+  );
 }

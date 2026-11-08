@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { lang } from "next/root-params";
 import { notFound } from "next/navigation";
-import { PageIntro, SectionHeading } from "@/components/ui";
-import { hasLocale, type Locale } from "@/i18n/config";
+import { PageTitle, SectionLabel } from "@/components/ui";
+import { hasLocale, localeTags, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getEvents, t, type Event } from "@/lib/content";
-import { alternates, formatDate } from "@/lib/site";
+import { alternates } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await lang();
@@ -15,24 +15,28 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: dict.events.title, description: dict.events.intro, alternates: alternates(locale, "/events") };
 }
 
-function EventList({ events, locale, empty }: { events: Event[]; locale: Locale; empty: string }) {
-  if (!events.length) return <p className="text-muted">{empty}</p>;
+function Ledger({ events, locale }: { events: Event[]; locale: Locale }) {
+  const fmt = (d: string, o: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat(localeTags[locale], { ...o, timeZone: "Asia/Dhaka" }).format(new Date(d));
   return (
-    <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
+    <ul className="-mt-6">
       {events.map((e) => (
-        <li key={e.slug}>
+        <li key={e.slug} className="border-b border-line">
           <Link
             href={`/${locale}/events/${e.slug}`}
-            className="flex flex-col gap-1 p-4 hover:bg-bg sm:flex-row sm:items-center sm:gap-6"
+            className="grid grid-cols-[5rem_1fr] items-baseline gap-x-6 py-6 sm:grid-cols-[7rem_1fr_16rem]"
           >
-            <time dateTime={e.startDate} className="w-40 shrink-0 text-sm font-semibold uppercase text-accent">
-              {formatDate(e.startDate, locale)}
+            <time dateTime={e.startDate} className="font-display text-6xl font-extrabold leading-none sm:text-7xl">
+              {fmt(e.startDate, { day: "numeric" })}
             </time>
-            <span className="flex-1">
-              <span className="block font-display text-lg font-bold">{t(e.name, locale)}</span>
-              <span className="block text-sm text-muted">{t(e.summary, locale)}</span>
+            <span>
+              <span className="block font-display text-sm font-bold uppercase tracking-[0.08em] text-accent">
+                {fmt(e.startDate, { month: "long", year: "numeric" })}
+              </span>
+              <span className="hl mt-1 block text-2xl font-bold">{t(e.name, locale)}</span>
+              <span className="mt-1 block text-muted">{t(e.summary, locale)}</span>
             </span>
-            <span className="text-sm text-muted">
+            <span className="col-start-2 mt-2 text-muted sm:col-start-auto sm:mt-0">
               {t(e.venue, locale)}, {t(e.city, locale)}
             </span>
           </Link>
@@ -53,15 +57,20 @@ export default async function EventsIndex() {
 
   return (
     <>
-      <PageIntro title={dict.events.title} intro={dict.events.intro} />
-      <section className="mb-10">
-        <SectionHeading title={dict.events.upcoming} />
-        <EventList events={upcoming} locale={locale} empty={dict.events.none} />
-      </section>
-      <section>
-        <SectionHeading title={dict.events.completed} />
-        <EventList events={completed} locale={locale} empty={dict.events.none} />
-      </section>
+      <PageTitle title={dict.events.title} intro={dict.events.intro} />
+      {events.length === 0 && <p className="text-lg text-muted">{dict.events.none}</p>}
+      {upcoming.length > 0 && (
+        <section className="mb-16">
+          <SectionLabel title={dict.events.upcoming} />
+          <Ledger events={upcoming} locale={locale} />
+        </section>
+      )}
+      {completed.length > 0 && (
+        <section>
+          <SectionLabel title={dict.events.completed} />
+          <Ledger events={completed} locale={locale} />
+        </section>
+      )}
     </>
   );
 }

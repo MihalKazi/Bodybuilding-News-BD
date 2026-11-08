@@ -1,28 +1,33 @@
 @import "tailwindcss";
 
+/* Paper ground, black ink, one red. Dark mode keeps the same roles. */
 :root {
-  --bg: #faf8f5;
+  --bg: #f6f5f1;
   --surface: #ffffff;
-  --ink: #141414;
-  --muted: #5f5b55;
-  --line: #e6e1d9;
+  --ink: #111111;
+  --muted: #5c5a55;
+  --line: #d9d6ce;
   --accent: #c8102e;
   --accent-ink: #ffffff;
-  --masthead: #111111;
-  --masthead-ink: #f5f3ef;
+  --band: #111111;
+  --band-ink: #f6f5f1;
+  --band-muted: #a9a59c;
+  --band-line: #2e2d2b;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f0f10;
-    --surface: #18181a;
-    --ink: #ece9e4;
-    --muted: #a19c94;
-    --line: #2a2a2d;
-    --accent: #ef3a4f;
-    --accent-ink: #ffffff;
-    --masthead: #000000;
-    --masthead-ink: #f5f3ef;
+    --bg: #121211;
+    --surface: #1a1a19;
+    --ink: #eeece7;
+    --muted: #a9a59c;
+    --line: #2e2d2b;
+    --accent: #ff4d5e;
+    --accent-ink: #111111;
+    --band: #000000;
+    --band-ink: #eeece7;
+    --band-muted: #a9a59c;
+    --band-line: #2e2d2b;
   }
 }
 
@@ -34,10 +39,12 @@
   --color-line: var(--line);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
-  --color-masthead: var(--masthead);
-  --color-masthead-ink: var(--masthead-ink);
+  --color-band: var(--band);
+  --color-band-ink: var(--band-ink);
+  --color-band-muted: var(--band-muted);
+  --color-band-line: var(--band-line);
   --font-sans: var(--font-inter), var(--font-bangla), system-ui, sans-serif;
-  --font-display: var(--font-oswald), var(--font-bangla), system-ui, sans-serif;
+  --font-display: var(--font-barlow), var(--font-bangla), system-ui, sans-serif;
 }
 
 body {
@@ -49,38 +56,93 @@ body {
   line-height: 1.7;
 }
 
-.prose-body p {
-  margin: 0 0 1.1em;
-  font-size: 1.075rem;
+/* Headline links: the underline draws in on hover. */
+.hl {
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 160ms ease;
+}
+a:hover .hl,
+a.hl:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Photos zoom a touch inside their frame on hover. */
+.zoom img {
+  transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+a:hover .zoom img {
+  transform: scale(1.025);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hl,
+  .zoom img {
+    transition: none;
+  }
+  a:hover .zoom img {
+    transform: none;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.prose-body {
+  font-size: 1.125rem;
   line-height: 1.75;
+}
+.prose-body p {
+  margin: 0 0 1.15em;
 }
 .prose-body h2 {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  margin: 1.6em 0 0.6em;
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 1.8em 0 0.6em;
 }
 .prose-body h3 {
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   margin: 1.4em 0 0.5em;
 }
 .prose-body ul {
-  list-style: disc;
-  padding-left: 1.4em;
-  margin-bottom: 1.1em;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.15em;
+  border-top: 1px solid var(--line);
+}
+.prose-body ul > li {
+  padding: 0.6em 0;
+  border-bottom: 1px solid var(--line);
 }
 .prose-body ol {
   list-style: decimal;
   padding-left: 1.4em;
-  margin-bottom: 1.1em;
+  margin-bottom: 1.15em;
 }
 .prose-body a {
   color: var(--accent);
   text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 .prose-body blockquote {
-  border-left: 4px solid var(--accent);
-  padding-left: 1em;
-  color: var(--muted);
-  font-style: italic;
+  margin: 1.6em 0;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+/* Long Bangla compounds and names must wrap, never push the page sideways. */
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
 }

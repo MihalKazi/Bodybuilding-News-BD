@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Cover, JsonLd, Prose } from "@/components/ui";
+import { BackLink, JsonLd, Kicker, Photo, Prose } from "@/components/ui";
 import { hasLocale, localeTags } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getArticle, getArticles, t, slugParams } from "@/lib/content";
@@ -37,7 +36,7 @@ export default async function ArticlePage({ params }: PageProps<"/[lang]/news/[s
   const title = t(article.title, lang)!;
 
   return (
-    <article className="mx-auto max-w-3xl">
+    <article>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -53,21 +52,34 @@ export default async function ArticlePage({ params }: PageProps<"/[lang]/news/[s
           mainEntityOfPage: `${SITE_URL}/${lang}/news/${slug}`,
         }}
       />
-      <Link href={`/${lang}/news`} className="text-sm font-semibold text-accent">
-        ← {dict.news.title}
-      </Link>
-      <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-accent">
-        {dict.categories[article.category]} · {formatDate(article.publishedAt, lang)}
-      </p>
-      <h1 className="mt-2 font-display text-3xl font-bold leading-tight sm:text-5xl">{title}</h1>
-      <p className="mt-3 text-lg text-muted">{t(article.excerpt, lang)}</p>
-      {article.author && (
-        <p className="mt-2 text-sm text-muted">
-          {dict.news.by} {article.author}
+      <header className="mx-auto max-w-4xl">
+        <BackLink href={`/${lang}/news`} label={dict.news.title} />
+        <Kicker className="mt-8">{dict.categories[article.category]}</Kicker>
+        <h1 className="mt-3 font-display text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-6xl">
+          {title}
+        </h1>
+        <p className="mt-6 text-xl leading-relaxed text-muted">{t(article.excerpt, lang)}</p>
+        <p className="mt-6 border-t border-line pt-4 text-sm text-muted">
+          {article.author && (
+            <>
+              {dict.news.by} <span className="font-semibold text-ink">{article.author}</span> ·{" "}
+            </>
+          )}
+          <time dateTime={article.publishedAt}>{formatDate(article.publishedAt, lang)}</time>
         </p>
-      )}
-      <Cover image={article.image} label={title} className="my-6 aspect-[16/9] rounded-lg" />
-      <Prose value={t(article.body, lang)} />
+      </header>
+      <Photo
+        image={article.image}
+        alt={title}
+        priority
+        ratio="aspect-[3/2]"
+        sizes="(min-width: 1024px) 1024px, 100vw"
+        className="mx-auto mt-10 max-w-5xl"
+        focus="50% 30%"
+      />
+      <div className="mx-auto mt-10 max-w-2xl">
+        <Prose value={t(article.body, lang)} />
+      </div>
     </article>
   );
 }

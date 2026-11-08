@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { lang } from "next/root-params";
 import { notFound } from "next/navigation";
-import { Card, Grid, PageIntro, SectionHeading } from "@/components/ui";
+import { PageTitle, SectionLabel } from "@/components/ui";
 import { hasLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getGuides, t, type GuideTopic } from "@/lib/content";
-import { alternates, formatDate } from "@/lib/site";
+import { alternates } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await lang();
@@ -23,28 +24,33 @@ export default async function GuidesIndex() {
 
   return (
     <>
-      <PageIntro title={dict.guides.title} intro={dict.guides.intro} />
-      {topics.map((topic) => {
-        const items = guides.filter((g) => g.topic === topic);
-        if (!items.length) return null;
-        return (
-          <section key={topic} className="mb-10">
-            <SectionHeading title={dict.topics[topic]} />
-            <Grid>
-              {items.map((g) => (
-                <Card
-                  key={g.slug}
-                  href={`/${locale}/guides/${g.slug}`}
-                  title={t(g.title, locale)!}
-                  excerpt={t(g.excerpt, locale)}
-                  meta={formatDate(g.publishedAt, locale)}
-                  image={g.image}
-                />
-              ))}
-            </Grid>
-          </section>
-        );
-      })}
+      <PageTitle title={dict.guides.title} intro={dict.guides.intro} />
+      <div className="grid gap-12 lg:grid-cols-2">
+        {topics.map((topic) => {
+          const items = guides.filter((g) => g.topic === topic);
+          if (!items.length) return null;
+          return (
+            <section key={topic}>
+              <SectionLabel title={dict.topics[topic]} />
+              <ol className="-mt-6">
+                {items.map((g, i) => (
+                  <li key={g.slug} className="border-b border-line">
+                    <Link href={`/${locale}/guides/${g.slug}`} className="flex gap-5 py-5">
+                      <span className="w-12 shrink-0 font-display text-4xl font-extrabold leading-none text-accent tabular-nums">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span>
+                        <span className="hl block text-xl font-bold leading-snug">{t(g.title, locale)}</span>
+                        <span className="mt-1 block text-muted">{t(g.excerpt, locale)}</span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          );
+        })}
+      </div>
     </>
   );
 }
