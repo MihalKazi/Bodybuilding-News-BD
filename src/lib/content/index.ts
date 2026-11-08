@@ -11,6 +11,14 @@ const source = sanityConfigured ? sanitySource : sampleSource;
 /** Tag shared by all CMS content; /api/revalidate invalidates it on publish. */
 export const CONTENT_TAG = "content";
 
+/**
+ * Cache Components fails the build when generateStaticParams returns [].
+ * With an empty CMS, return one placeholder slug; its lookup finds nothing and 404s.
+ */
+export function slugParams(items: { slug: string }[]) {
+  return items.length ? items.map((i) => ({ slug: i.slug })) : [{ slug: "__placeholder__" }];
+}
+
 function cached() {
   cacheLife("hours");
   cacheTag(CONTENT_TAG);

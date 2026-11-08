@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 import { Cover, JsonLd, Prose } from "@/components/ui";
 import { hasLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getAthlete, getAthletes, t } from "@/lib/content";
+import { getAthlete, getAthletes, t, slugParams } from "@/lib/content";
 import { alternates, SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
-  return (await getAthletes()).map((a) => ({ slug: a.slug }));
+  return slugParams(await getAthletes());
 }
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/athletes/[slug]">): Promise<Metadata> {

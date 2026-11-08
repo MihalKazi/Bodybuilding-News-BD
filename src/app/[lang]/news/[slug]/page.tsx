@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 import { Cover, JsonLd, Prose } from "@/components/ui";
 import { hasLocale, localeTags } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getArticle, getArticles, t } from "@/lib/content";
+import { getArticle, getArticles, t, slugParams } from "@/lib/content";
 import { alternates, formatDate, SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
-  return (await getArticles()).map((a) => ({ slug: a.slug }));
+  return slugParams(await getArticles());
 }
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/news/[slug]">): Promise<Metadata> {
