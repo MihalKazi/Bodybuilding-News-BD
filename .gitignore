@@ -46,3 +46,4 @@ studio/dist
 studio/.sanity
 studio/.env
 !.env.example
+.claude/settings.local.json

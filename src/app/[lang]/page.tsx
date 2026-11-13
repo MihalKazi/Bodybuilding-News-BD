@@ -94,9 +94,11 @@ export default async function Home() {
   const leadIndex = Math.max(0, articles.slice(0, 4).findIndex((a) => a.image));
   const lead = articles[leadIndex];
   const rest = articles.filter((_, i) => i !== leadIndex);
-  const side = rest.slice(0, 3);
-  const latest = rest.slice(3, 9);
-  const more = rest.slice(9, 17);
+  // Top block holds the three newest stories (lead + two beside it).
+  const side = rest.slice(0, 2);
+  // "Latest" lists every story newest first, starting from the newest, so nothing is skipped.
+  const latest = articles.slice(0, 9);
+  const more = articles.slice(9, 17);
   const upcoming = events
     .filter((e) => e.status === "upcoming")
     .sort((a, b) => a.startDate.localeCompare(b.startDate))
@@ -104,12 +106,12 @@ export default async function Home() {
   const featured = (athletes.some((a) => a.featured) ? athletes.filter((a) => a.featured) : athletes).slice(0, 4);
   const meta = (a: Article) => `${dict.categories[a.category]} · ${formatDate(a.publishedAt, locale)}`;
 
-  // Right column: the next stories first; until there are three, real section cards fill the slots.
+  // Right column: the next two stories; until there are two, real section cards fill the slots.
   const sectionCards = [
     { href: `/${locale}/events`, title: dict.nav.events, meta: dict.events.title },
     { href: `/${locale}/athletes`, title: dict.nav.athletes, meta: dict.athletes.intro },
     { href: `/${locale}/guides`, title: dict.nav.guides, meta: dict.guides.title },
-  ].slice(0, Math.max(0, 3 - side.length));
+  ].slice(0, Math.max(0, 2 - side.length));
   const strip = [
     { href: `/${locale}/news`, label: dict.nav.news },
     { href: `/${locale}/events`, label: dict.nav.events },
